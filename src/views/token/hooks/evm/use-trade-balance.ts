@@ -2,7 +2,7 @@ import { Address, formatEther } from 'viem'
 import { useAccount, useBalance, useReadContract } from 'wagmi'
 
 import { BI_ZERO } from '@/constants/number'
-import { tokenAbiMap } from '@/contract/abi/token'
+// import { tokenAbiMap } from '@/contract/abi/token'
 import { useTokenContext } from '@/contexts/token'
 
 export const useEvmTradeBalance = () => {
@@ -30,7 +30,8 @@ export const useEvmTradeBalance = () => {
     isFetching: isFetchingToken,
     refetch: refetchTokenBalance,
   } = useReadContract({
-    abi: tokenAbiMap[coin_version!],
+    // abi: tokenAbiMap[coin_version!],
+    abi: [],
     address: tokenAddr as Address,
     functionName: 'balanceOf',
     chainId,

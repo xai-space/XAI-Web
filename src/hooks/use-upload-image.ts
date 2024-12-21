@@ -88,14 +88,19 @@ export const useUploadImage = (options?: Options) => {
 
 
     if (isUpload) {
-      onSubmitImg(fileList)
+      // clear files
+      files.splice(0, files.length)
+      return await onSubmitImg(fileList)
     }
   }
 
-  const onSubmitImg = async (files: File[]) => {
+  const onSubmitImg = async (_files?: File[]) => {
+
+    if (_files?.length) {
+      files.push(..._files)
+    }
 
     const formData = new FormData()
-    console.log('files', files);
 
     if (!files?.length) return
 
@@ -108,8 +113,12 @@ export const useUploadImage = (options?: Options) => {
       }
     }
 
+
     try {
       const { data } = await mutateAsync(formData)
+
+      console.log("Image Data: ", data);
+
       return isArray(data) ? data : [data]
 
     } catch (err) {
@@ -171,7 +180,7 @@ export const useUploadImage = (options?: Options) => {
   }
 
   return {
-    url: data?.data ?? '',
+    url: !data ? data : isArray(data.data) ? data.data : [data.data],
     files,
     blobUrl,
     isUploading,

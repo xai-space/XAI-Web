@@ -23,7 +23,7 @@ const cardVariants = cva(
         none: 'cursor-[unset]',
         default: 'cursor-default',
         pointer: 'cursor-pointer',
-        bg: 'hover:bg-zinc-100 cursor-pointer',
+        bg: 'hover:bg-gray-700 cursor-pointer',
         scale: 'hover:scale-105 cursor-pointer',
       },
       border: {

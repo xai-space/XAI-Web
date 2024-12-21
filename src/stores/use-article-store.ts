@@ -1,13 +1,12 @@
-import { AgentInfoResDataBase, AgentSessionsList } from '@/api/ai/type'
-import { FeedListRes } from '@/api/feed/types'
+import { FeedListItem } from '@/api/feed/types'
 import { create } from 'zustand'
 
 interface ArticleInfoStore {
-    article: FeedListRes | undefined
-    feedList: FeedListRes[]
+    article: FeedListItem | undefined
+    feedList: FeedListItem[]
 
-    setFeedList: (feedList: FeedListRes[]) => void
-    setArticle: (article: FeedListRes) => void
+    setFeedList: (feedList: FeedListItem[]) => void
+    setArticle: (article: FeedListItem) => void
 }
 
 export const useArticleStore = create<ArticleInfoStore>((set, get) => ({

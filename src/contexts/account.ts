@@ -1,14 +1,15 @@
 import { createContext, useContext } from 'react'
 
-import type { UserInfoRes } from '@/api/user/types'
+import type { UserFollow, UserFollowersRes, UserInfoRes } from '@/api/user/types'
 import { CONTEXT_ERR } from '@/errors/context'
 
 interface Value {
   userInfo: UserInfoRes | null
   isPending: boolean
   isOtherUser: boolean
+  isAgent: boolean
   refetchUserInfo: VoidFunction
-  followersResults: ReturnType<any>
+  followers?: UserFollowersRes
   followingResults: ReturnType<any>
   refetchFollow: () => void
 }

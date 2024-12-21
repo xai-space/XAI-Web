@@ -45,7 +45,7 @@ export function Chat({ scrollBarToBottom }: ChatProps) {
   const onSubmit = (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault()
 
-    if (!userInfo?.user.id) {
+    if (!userInfo?.user_id) {
       toast.error(t('no.login'))
       return
     }

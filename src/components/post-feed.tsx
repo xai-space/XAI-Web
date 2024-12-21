@@ -4,13 +4,16 @@ import ArticleCard from '@/views/feed/components/article-card'
 import { FeedAsiade } from '@/views/feed/components/article-sider'
 import { useInfiniteScroll } from 'ahooks'
 import { ListLoading } from './loading'
-import { FeedList, FeedListRes } from '@/api/feed/types'
+import { FeedList, FeedListItem } from '@/api/feed/types'
 import { FC, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useUserInfo } from '@/hooks/use-user-info'
+import { useTranslation } from 'react-i18next'
+import { PublishPost } from './publish-post'
+import { PublishPostDialog } from './publish-post-dialog'
 
 interface Result {
-  list: FeedListRes[]
+  list: FeedListItem[]
   noMore: boolean
 }
 
@@ -21,8 +24,9 @@ interface Props {
 
 export const PostFeed = ({ className, isMy = false }: Props) => {
   // const { data, isFetching, isLoading, fetchNextPage } = useFeeds()
+  const { t } = useTranslation()
   const { feedList, setFeedList } = useArticleStore()
-  const { userInfo } = useUserInfo()
+  const { otherUserInfo } = useUserInfo()
 
   const getLoadMoreList = async (): Promise<Result> => {
     let start = Math.floor(feedList.length / 10) + 1
@@ -32,21 +36,34 @@ export const PostFeed = ({ className, isMy = false }: Props) => {
       limit: 10,
     }
 
-    if (isMy && userInfo?.user.id) {
-      bodyData.user_id = userInfo?.user.id
+    if (isMy) {
+      if (otherUserInfo?.user_id) {
+        bodyData.user_id = otherUserInfo?.user_id
+      } else {
+        return {
+          list: [],
+          noMore: true,
+        }
+      }
     }
 
     const { data } = await feedApi.getList(bodyData)
 
-    setFeedList(feedList.concat(data))
+    if (data?.list) {
+      setFeedList(feedList.concat(data?.list))
+      return {
+        list: data?.list,
+        noMore: data?.list.length !== 10,
+      }
+    }
 
     return {
-      list: data,
-      noMore: data.length !== 10,
+      list: [],
+      noMore: true,
     }
   }
 
-  const { loading, loadingMore, mutate } = useInfiniteScroll(
+  const { loading, loadingMore, mutate, reload } = useInfiniteScroll(
     () => getLoadMoreList(),
     {
       target: document,
@@ -64,13 +81,28 @@ export const PostFeed = ({ className, isMy = false }: Props) => {
   }
 
   useEffect(() => {
-    if (isMy && userInfo?.user.id) {
+    if (isMy && otherUserInfo?.user_id) {
       mutate({
         list: [],
         noMore: true,
       })
+      reload()
     }
-  }, [isMy, userInfo])
+  }, [isMy, otherUserInfo])
+
+  if (feedList.length === 0 && !loading && !loadingMore) {
+    return (
+      <div className="flex h-full mt-4">
+        {isMy ? (
+          <div>
+            <div>{t('no.post')}</div>
+          </div>
+        ) : (
+          <FeedAsiade />
+        )}
+      </div>
+    )
+  }
 
   return (
     <div
@@ -85,9 +117,6 @@ export const PostFeed = ({ className, isMy = false }: Props) => {
         />
       ))}
       {(loading || loadingMore) && <ListLoading />}
-      <div>
-        <FeedAsiade />
-      </div>
     </div>
   )
 }

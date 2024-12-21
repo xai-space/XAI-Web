@@ -8,7 +8,7 @@ export interface UploadImageRes { url: string, filename: string }
 
 export const otherApi = {
   uploadImage: (formData: FormData) => {
-    return api.POST<ApiResponse<UploadImageRes[]>>('/v1/playground/upload', {
+    return api.POST<ApiResponse<UploadImageRes | UploadImageRes[]>>('/agent/v1/playground/upload', {
       body: formData,
       headers: {
         [CommonHeaders.ContentType]: ContentType.FormData,
@@ -16,7 +16,7 @@ export const otherApi = {
     })
   },
   uploadImages: (formData: FormData) => {
-    return api.POST<ApiResponse<UploadImageRes[]>>('/v1/playground/batch/upload', {
+    return api.POST<ApiResponse<UploadImageRes[] | UploadImageRes>>('/agent/v1/playground/batch/upload', {
       body: formData,
       headers: {
         [CommonHeaders.ContentType]: ContentType.FormData,

@@ -68,7 +68,7 @@ export const CommentCard = (props: Props) => {
           className="flex items-center group transition-all w-fit"
           onClick={() => {
             if (!c.user.wallet_address || disableToProfile) return
-            router.push(joinPaths(Routes.Account, c.user.wallet_address))
+            router.push(joinPaths(Routes.Account, c.user.id))
           }}
         >
           <Avatar

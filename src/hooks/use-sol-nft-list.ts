@@ -1,14 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
 import { dasApi } from "@metaplex-foundation/digital-asset-standard-api";
 import { Asset, NFTInfo, NFTListRes, NetworkNFTList } from "@/api/nft";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { PublicKey } from "@metaplex-foundation/js";
 
 
 export const useSolNFTList = (nftListRef: React.RefObject<HTMLDivElement>) => {
-    const [list, setList] = useState<NetworkNFTList[]
+    const [solList, setSolList] = useState<NetworkNFTList[]
     >([])
     let limit = 20
+    const [loading, setLoading] = useState(false)
+    const [loadingMore, setLoadingMore] = useState(false)
+    const { primaryWallet } = useDynamicContext()
 
     const umi = createUmi(
         'https://maximum-crimson-spring.solana-mainnet.quiknode.pro/a6dab9a89e264894d6e1b914715a09b4befce3f6'
@@ -61,7 +66,8 @@ export const useSolNFTList = (nftListRef: React.RefObject<HTMLDivElement>) => {
     // })
 
     const getNFTList = async () => {
-        const address = '2Whhi93Ckub7Sc9DViCLTpKS4bdDy9zv3ctxEJAa7J6D'
+        setLoading(true)
+        const address = primaryWallet?.address
 
         // getSolanaNFTAsset()
         const { data } = await (await fetch(`https://solanaapi.nftscan.com/api/sol/account/own/all/${address}?show_attribute=false`, {
@@ -80,22 +86,32 @@ export const useSolNFTList = (nftListRef: React.RefObject<HTMLDivElement>) => {
             return !!item.logo_url && item.items_total >= 1000 && item.collection && item.description && item.logo_url
         })
 
-        const list = {
-            chain: 'sol',
-            exceed_max_items: false,
-            collection_assets: collectionAssets
-        } as NetworkNFTList
-
-        setList([list])
+        if (collectionAssets.length) {
+            setSolList([{
+                chain: 'sol',
+                exceed_max_items: false,
+                collection_assets: collectionAssets
+            }])
+        }
+        setLoading(false)
     }
 
+    useEffect(() => {
+        try {
+            if (primaryWallet?.address && PublicKey.isOnCurve(primaryWallet.address)) {
+                getNFTList()
+            }
+        } catch (error) {
+            console.log('error', error);
+        }
+    }, [primaryWallet])
 
     return {
-        list,
+        solList,
         getNFTList,
-        setList,
+        setSolList,
         // data,
-        // loading,
-        // loadingMore,
+        loading,
+        loadingMore,
     }
 }

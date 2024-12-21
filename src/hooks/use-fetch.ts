@@ -13,8 +13,8 @@ export enum ContentType {
   Json = 'application/json',
   FormData = 'multipart/form-data',
 }
-// https://api.xai.space/develop/agent/v1/playground/agent/create
-// https://api.xai.space/develop/agent/v1/playground/create
+// https://api.xai.space/develop/agent/agent/v1/playground/agent/create
+// https://api.xai.space/develop/agent/agent/v1/playground/create
 
 export interface FetcherOptions extends Omit<RequestInit, 'body'> {
   contentType?: ContentType

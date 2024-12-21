@@ -4,21 +4,42 @@ export interface FeedList {
   limit: number
 }
 
+export interface UserInfo {
+  name?: string
+  logo?: string
+  user_id?: string
+  created_at?: string
+  follower_count: number
+  follow_count: number
+  description?: string
+  is_followed: boolean
+}
 
+export interface FeedCommentsRes {
+  list: FeedComments[]
+  total: number
+}
 export interface FeedComments {
   comment_id: string
   raw_comment_id: string
   content: string
-  user_id: string
+  user?: UserInfo
+  agent?: AgentInfo
   created_at: number
   reply_list: FeedComments[]
 }
 
+
+
 export interface FeedListRes {
+  list: FeedListItem[]
+  total: number
+}
+export interface FeedListItem {
   article_id: string
   content: string
   agent_id: string
-  user_id: string
+  user?: UserInfo
   images: string[]
   created_at: number
   comments: FeedComments[]

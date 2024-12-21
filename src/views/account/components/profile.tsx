@@ -15,13 +15,15 @@ import { ApiResponse } from '@/api/types'
 import AccountInfoDesktop from './account-info-desktop'
 import { useResponsive } from '@/hooks/use-responsive'
 import AccountInfoMoblie from './account-info-mobile'
-
+import { useRequest } from 'ahooks'
+import { aiApi } from '@/api/ai'
+import { useEffect } from 'react'
 export interface AccountInfoProps {
-  userInfo: UserInfoRes | undefined
   isOtherUser: boolean
   isFollowing: boolean
   isUnfollowing: boolean
   tokenAddr: string
+  isAgent: boolean
   update: UseMutateAsyncFunction<
     ApiResponse<UserInfoRes>,
     Error,
@@ -44,7 +46,7 @@ export interface AccountInfoProps {
 }
 
 export const Profile = () => {
-  const { userInfo, isOtherUser, refetchUserInfo, refetchFollow } =
+  const { userInfo, isAgent, isOtherUser, refetchUserInfo, refetchFollow } =
     useAccountContext()
   const { isFollowing, isUnfollowing, follow, unfollow, update } = useUser({
     onFollowFinlly: () => {
@@ -57,7 +59,20 @@ export const Profile = () => {
   const { isPad } = useResponsive()
   const tokenAddr = (query.address || '') as string
 
-  // console.log('userinfo:', userInfo)
+  console.log('queryProfile:', query)
+  useEffect(() => {
+    getAgentProfile()
+  }, [query.uid])
+  const { data: profileData, runAsync: getAgentProfile } = useRequest(
+    () => aiApi.getAgentInfo(query.uid as string),
+    {
+      manual: true,
+      onSuccess: (res) => {
+        console.log('getAgentProfile:', res)
+        return res.data
+      },
+    }
+  )
 
   return (
     <div className="flex-1 border border-border rounded-md">
@@ -68,7 +83,7 @@ export const Profile = () => {
       <div className="bg-background px-2 pt-2 relative after:absolute after:w-full after:h-px after:bg-border after:bottom-5 after:left-0">
         {!isPad ? (
           <AccountInfoDesktop
-            userInfo={userInfo}
+            isAgent={isAgent}
             isOtherUser={isOtherUser}
             isFollowing={isFollowing}
             isUnfollowing={isUnfollowing}
@@ -80,7 +95,7 @@ export const Profile = () => {
           />
         ) : (
           <AccountInfoMoblie
-            userInfo={userInfo}
+            isAgent={isAgent}
             isOtherUser={isOtherUser}
             isFollowing={isFollowing}
             isUnfollowing={isUnfollowing}

@@ -6,12 +6,12 @@ import { fmt } from '@/utils/fmt'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/router'
-import { UserInfoRes } from '@/api/user/types'
+import { UserCategory, UserInfoRes } from '@/api/user/types'
 import { Routes } from '@/routes'
 import { ConnectWallet } from '../../connect-wallet'
 import { NavAccountPopover } from './nav-account-pop'
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core'
-import { defaultAgentLogo } from '@/config/link'
+import { defaultAgentLogo, defaultUserLogo } from '@/config/link'
 import { useUserStore } from '@/stores/use-user-store'
 import { staticUrl } from '@/config/url'
 
@@ -28,8 +28,6 @@ export const NavAccount = ({
 
   const avatar = '/images/logo.png'
 
-  console.log('userInfo-----', userInfo)
-
   const userInfoIsCollapsed = () => {
     // TODO: wait api
     // if (userInfo) {
@@ -39,7 +37,7 @@ export const NavAccount = ({
       return (
         <NavAccountPopover>
           <Avatar
-            src={userInfo?.logo || avatar}
+            src={userInfo?.logo ? `${staticUrl}${userInfo?.logo}` : avatar}
             className="rounded-full w-10 h-10"
           />
         </NavAccountPopover>
@@ -51,20 +49,20 @@ export const NavAccount = ({
         <div
           className="flex items-end cursor-pointer mr-2"
           onClick={() =>
-            router.push(`${Routes.Account}/${primaryWallet?.address}`)
+            router.push(
+              `${Routes.Account}/${userInfo?.user_id}?t=${UserCategory.User}`
+            )
           }
         >
           <Avatar
             src={
-              userInfo?.user?.logo
-                ? `${staticUrl}${userInfo?.user?.logo}`
-                : defaultAgentLogo
+              userInfo?.logo ? `${staticUrl}${userInfo?.logo}` : defaultUserLogo
             }
             className="rounded-full w-12 h-12"
           />
           <div className="flex flex-col space-y-1">
             <div className="text-sm ml-2 font-semibold line-clamp-1 break-all">
-              {userInfo?.user?.name || '--'}
+              {userInfo?.name || primaryWallet?.address.slice(0, 4) || '--'}
             </div>
             <span className="text-xs ml-2 text-gray-500">
               {fmt.addr(primaryWallet?.address)}

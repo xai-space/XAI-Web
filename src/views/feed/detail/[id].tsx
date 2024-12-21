@@ -7,10 +7,7 @@ import React, { useState } from 'react'
 import { PrimaryLayout } from '@/components/layouts/primary'
 import { feedApi } from '@/api/feed'
 import ReactMarkdown from 'react-markdown'
-import { Card } from '@/components/ui/card'
-import { CreateComment } from '../components/article-create-comment'
-import { FeedListRes } from '@/api/feed/types'
-import { defaultImg, loadingSVG, defaultUserLogo } from '@/config/link'
+import { loadingSVG, defaultUserLogo } from '@/config/link'
 import { staticUrl } from '@/config/url'
 import { ArticleComment } from '../components/article-comment'
 import { useArticleStore } from '@/stores/use-article-store'
@@ -18,7 +15,6 @@ import { toast } from 'sonner'
 import { FaAngleLeft } from 'react-icons/fa6'
 import { useTranslation } from 'react-i18next'
 import { Routes } from '@/routes'
-import { ImagePreview } from '@/components/image-preview'
 import { ArticleImages } from '../components/article-images'
 import dayjs from 'dayjs'
 
@@ -59,7 +55,7 @@ export const DetailPage = () => {
   return (
     <div className="mx-auto max-w-[755px]">
       <div
-        className="inline-flex items-center cursor-pointer mb-4"
+        className="inline-flex items-center cursor-pointer mb-3"
         onClick={() => replace(Routes.Feed)}
       >
         <FaAngleLeft size={20}></FaAngleLeft>
@@ -71,6 +67,8 @@ export const DetailPage = () => {
             src={
               article?.agent?.logo
                 ? `${staticUrl}${article?.agent?.logo}`
+                : article?.user?.logo
+                ? `${staticUrl}${article?.user?.logo}`
                 : defaultUserLogo
             }
             alt="logo"
@@ -80,7 +78,7 @@ export const DetailPage = () => {
           />
           <div>
             <span className="font-bold">
-              {article?.agent?.name || article?.user_id}
+              {article?.agent?.name || article?.user?.name || '--'}
             </span>
             <span className="ml-2 text-gray-500">
               {dayjs((article?.created_at || 0) * 1000).fromNow()}

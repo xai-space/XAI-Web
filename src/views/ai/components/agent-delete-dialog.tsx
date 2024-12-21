@@ -21,7 +21,6 @@ export const AgentDeleteDialog = ({
 }: Props) => {
   const { t } = useTranslation()
   const { agentInfo, setAgentInfo } = useAIAgentStore()
-  console.log('delAgent', delAgent)
 
   const [loading, setLoading] = useState(false)
 

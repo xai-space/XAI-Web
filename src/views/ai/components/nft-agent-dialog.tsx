@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { loadingSVG } from '@/config/link'
 import { useEvmNftList } from '@/hooks/use-evm-nft-list'
 import { useSolNFTList } from '@/hooks/use-sol-nft-list'
 import { cn } from '@/lib/utils'
@@ -14,6 +15,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaCheck } from 'react-icons/fa6'
 import { FaChevronLeft } from 'react-icons/fa6'
+
+enum Network {
+  EVM = 'evm',
+  SOL = 'sol',
+}
 
 interface Props {
   open: boolean
@@ -35,16 +41,14 @@ export const NftAgentDialog = ({
   setNftInfo,
 }: Props) => {
   const { t } = useTranslation()
-  const [network, setNetwork] = useState('evm')
-
-  const [showCollection, setShowCollection] = useState<string>('')
+  const [network, setNetwork] = useState(Network.EVM)
   const [collection, setCollection] = useState<NFTInfo>()
 
   const nftListRef = useRef<HTMLDivElement>(null)
 
-  const { list, getNFTList } = useSolNFTList(nftListRef)
+  const { solList, loading: solLoading } = useSolNFTList(nftListRef)
 
-  const { evmNftList, getEVMNFTList } = useEvmNftList()
+  const { evmNftList, loading: evmLoading } = useEvmNftList()
 
   const getUrlByMetadataJson = (nftData: Asset) => {
     const data = JSON.parse(nftData.metadata_json) as { image: string }
@@ -72,7 +76,7 @@ export const NftAgentDialog = ({
       const imageUrl = getUrlByMetadataJson(item)
 
       const handleCollectionNmae = () => {
-        if (network === 'evm') {
+        if (network === Network.EVM) {
           return `${item.contract_name}${
             typeof item.token_id === 'string' ? `#${item.token_id}` : ''
           }`
@@ -139,7 +143,7 @@ export const NftAgentDialog = ({
   }
 
   const renderCollectionList = () => {
-    return (network === 'evm' ? evmNftList : list).map((item, i) => {
+    return (network === Network.EVM ? evmNftList : solList).map((item, i) => {
       return item.collection_assets.map((_collection, i) => {
         return (
           <div
@@ -176,11 +180,6 @@ export const NftAgentDialog = ({
     })
   }
 
-  useEffect(() => {
-    getNFTList()
-    getEVMNFTList()
-  }, [])
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div>
@@ -190,15 +189,15 @@ export const NftAgentDialog = ({
             defaultValue={network}
             onValueChange={(n) => {
               setCollection(undefined)
-              setNetwork(n)
+              setNetwork(n as Network)
             }}
           >
             <SelectTrigger className="w-[115px]">
               <SelectValue placeholder="Theme" className="w-[115px]" />
             </SelectTrigger>
             <SelectContent className="w-[115px]">
-              <SelectItem value="evm">EVM</SelectItem>
-              <SelectItem value="sol">SOL</SelectItem>
+              <SelectItem value={Network.EVM}>EVM</SelectItem>
+              <SelectItem value={Network.SOL}>SOL</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -220,7 +219,9 @@ export const NftAgentDialog = ({
             {!collection ? renderCollectionList() : renderNftList()}
           </div>
 
-          {/* {loading || loadingMore ? (
+          {network === Network.SOL ? (
+            solLoading
+          ) : evmLoading ? (
             <img
               src={loadingSVG}
               width={40}
@@ -229,7 +230,21 @@ export const NftAgentDialog = ({
             ></img>
           ) : null}
 
-          {data?.noMore !== true && list.length === 20 ? (
+          {!collection &&
+          network === Network.SOL &&
+          !solLoading &&
+          solList.length === 0 ? (
+            <div className="text-center w-full mt-4">{t('no.nft')}</div>
+          ) : null}
+
+          {!collection &&
+          network === Network.EVM &&
+          !evmLoading &&
+          evmNftList.length === 0 ? (
+            <div className="text-center w-full mt-4">{t('no.nft')}</div>
+          ) : null}
+
+          {/* {data?.noMore !== true && list.length === 20 ? (
             <div
               className="mx-auto cursor-pointer text-center mt-4"
               onClick={() => {

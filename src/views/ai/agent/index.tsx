@@ -24,20 +24,30 @@ const AgentList = () => {
   const isAll = !query.type || query.type === '1'
 
   return (
-    <div className="max-w-[800px] w-[80%] mx-auto pt-8">
+    <div className="max-w-[800px] mx-auto pt-0 ">
       <div className="flex justify-between items-center text-xl">
         {t('agent.list')}
-        <Button
-          onClick={() => {
-            setAgentInfo(undefined)
-            push(Routes.AICreate)
-          }}
-        >
-          {t('create.agent')}
-        </Button>
+        <div className="flex space-x-4">
+          <Button
+            onClick={() => {
+              push(Routes.Create)
+            }}
+            variant="purple"
+          >
+            {t('create.token')}
+          </Button>
+          <Button
+            onClick={() => {
+              setAgentInfo(undefined)
+              push(Routes.AICreate)
+            }}
+          >
+            {t('create.agent')}
+          </Button>
+        </div>
       </div>
 
-      {userInfo?.user?.id && (
+      {userInfo?.user_id && (
         <div className="flex mt-1">
           <Button
             className="!px-8"
@@ -52,7 +62,7 @@ const AgentList = () => {
             className="ml-5 !px-8"
             variant={!isAll ? 'purple' : 'secondary'}
             onClick={(e) => {
-              if (!userInfo?.user.id) {
+              if (!userInfo?.user_id) {
                 toast.error(t('no.login'))
                 return
               }

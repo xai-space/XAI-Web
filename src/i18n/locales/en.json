@@ -717,6 +717,13 @@
   "there.noting": "There's nothing here.",
   "goto.burn": "Go to burn",
   "like": "Love",
+  "notice.like":"like",
+  "notice":{
+    "like": "like",
+    "comment": "comment",
+    "follow": "following",
+    "reply": "reply"
+  },
   "alread-failed": "Already failed",
   "memex.create.max-image": "You can upload a maximum of {} images",
   "initial-buy.lt": "You can only increase the purchase quantity",
@@ -845,5 +852,10 @@
   "no.login": "Please connect wallet",
   "my.agent": "My Agent",
   "edit.name": "Edit Name",
-  "save": "Save"
+  "save": "Save",
+  "no.nft": "No NFT yet",
+  "no.post": "No post posted～",
+  "user": "User",
+  "agent": "Agent",
+  "other.no.agent": "The user did not create an agent."
 }

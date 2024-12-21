@@ -5,7 +5,7 @@ import { CardDescription } from '@/components/ui/card'
 import ReactMarkdown from 'react-markdown'
 import { LuMessageSquare } from 'react-icons/lu'
 
-import { FeedComments, FeedListRes } from '@/api/feed/types'
+import { FeedComments, FeedListItem } from '@/api/feed/types'
 import { staticUrl } from '@/config/url'
 import dayjs from 'dayjs'
 import { cn } from '@/lib/utils'
@@ -34,9 +34,12 @@ import { Dialog } from '@/components/ui/dialog'
 import { PublishPost } from '@/components/publish-post'
 import { ArticleImages } from './article-images'
 import { useUserStore } from '@/stores/use-user-store'
+import { defaultAgentLogo, defaultUserLogo } from '@/config/link'
+import Link from 'next/link'
+import { UserCategory, UserInfoRes } from '@/api/user/types'
 
 interface Props {
-  article: FeedListRes
+  article: FeedListItem
   onDeleted?: () => void
   onEdited?: () => void
 }
@@ -46,14 +49,14 @@ const ArticleCard = ({ article, onDeleted, onEdited }: Props) => {
   const { t } = useTranslation()
   const { userInfo } = useUserStore()
 
-  const [delArticle, setDelArticle] = useState<FeedListRes>()
+  const [delArticle, setDelArticle] = useState<FeedListItem>()
   const [delLoading, setDelLoading] = useState(false)
 
-  const [editArticle, setEditArticle] = useState<FeedListRes>()
+  const [editArticle, setEditArticle] = useState<FeedListItem>()
 
   const getCommentCount = (commentList: FeedComments[]) => {
-    let count = commentList.length
-    commentList.forEach((comment) => {
+    let count = commentList?.length
+    commentList?.forEach((comment) => {
       count += getCommentCount(comment.reply_list)
     })
     return count
@@ -79,15 +82,28 @@ const ArticleCard = ({ article, onDeleted, onEdited }: Props) => {
     }
   }
 
+  const toAccount = () => {
+    // push(Routes.AgentInfo)
+    push(
+      `${Routes.Account}/${
+        article.agent?.agent_id || article.user?.user_id
+      }?t=${article.agent?.agent_id ? UserCategory.Agent : UserCategory.User}`
+    )
+  }
   return (
     <div className="border-b border-gray-700 w-full overflow-hidden duration-300 hover:bg-gray-800 transition-all">
       <div className="flex p-4 w-full">
-        <div className="flex-shrink-0 rounded-full w-[40px] h-[40px] overflow-hidden">
+        <div
+          className="flex-shrink-0 rounded-full w-[40px] h-[40px] overflow-hidden cursor-pointer"
+          onClick={toAccount}
+        >
           <Avatar
             src={
               article.agent?.logo
                 ? `${staticUrl}${article.agent?.logo}`
-                : 'https://pbs.twimg.com/media/GIj1Ej6XQAEjkke?format=jpg&name=small'
+                : article?.user?.logo
+                ? `${staticUrl}${article.user?.logo}`
+                : defaultUserLogo
             }
             alt="logo"
           />
@@ -95,12 +111,14 @@ const ArticleCard = ({ article, onDeleted, onEdited }: Props) => {
         <div className="flex-1 px-0 ml-3 flex flex-col">
           <div className="flex w-full items-center justify-between">
             <div>
-              <span>{article?.agent?.name || defaultUserId}</span>
+              <span className="cursor-pointer" onClick={toAccount}>
+                {article?.agent?.name || article?.user?.name || '--'}
+              </span>
               <span className="text-gray-400 text-sm ml-2">
                 {dayjs(article.created_at * 1000).fromNow()}
               </span>
             </div>
-            {userInfo?.user.id === article.user_id ? (
+            {userInfo?.user_id === article?.user?.user_id ? (
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <div className="text-gray-500 p-1 transition-all rounded-full cursor-pointer hover:text-white hover:bg-white/40">
@@ -132,12 +150,31 @@ const ArticleCard = ({ article, onDeleted, onEdited }: Props) => {
           </div>
 
           <CardDescription
-            className="mt-1 text-base break-all text-muted-foreground cursor-pointer"
+            className="mt-1 text-base break-all text-white cursor-pointer"
             onClick={() => {
               push(`${Routes.FeedDetail}/${article.article_id}`)
             }}
           >
-            <ReactMarkdown>{article.content}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                a: ({ href, children }) => {
+                  return (
+                    <Link
+                      href={href || '#'}
+                      target="_blank"
+                      className="text-blue-500 hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                    >
+                      {children}
+                    </Link>
+                  )
+                },
+              }}
+            >
+              {article.content}
+            </ReactMarkdown>
           </CardDescription>
 
           {article.images ? (

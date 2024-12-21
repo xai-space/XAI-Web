@@ -5,9 +5,9 @@ import { type Address } from 'viem'
 
 import { tokenApi } from '@/api/token'
 import type { TokenConfigContract } from '@/api/token/types'
-import type { BcVersion } from '@/contract/abi/bonding-curve'
-import type { RecommendVersion } from '@/contract/abi/recommend'
-import type { TokenVersion } from '@/contract/abi/token'
+// import type { BcVersion } from '@/contract/abi/bonding-curve'
+// import type { RecommendVersion } from '@/contract/abi/recommend'
+// import type { TokenVersion } from '@/contract/abi/token'
 
 const groupOrderContracts = (contracts: TokenConfigContract[] = []) => {
   if (contracts.length === 0) return {}
@@ -50,9 +50,12 @@ export const useTokenConfig = (chain: string | undefined) => {
     { address: recommendAddress, version: recommendVersion },
   ] = useMemo(
     () => [
-      getFirstContract<BcVersion>(contracts?.bond),
-      getFirstContract<TokenVersion>(contracts?.coin),
-      getFirstContract<RecommendVersion>(contracts?.recommend),
+      // getFirstContract<BcVersion>(contracts?.bond),
+      getFirstContract<string>(contracts?.bond),
+      // getFirstContract<TokenVersion>(contracts?.coin),
+      getFirstContract<string>(contracts?.coin),
+      // getFirstContract<RecommendVersion>(contracts?.recommend),
+      getFirstContract<string>(contracts?.recommend),
     ],
     [contracts, chain]
   )

@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { Card } from '@/components/ui/card'
 import { Routes } from '@/routes'
-import { UserListRes, UserListType } from '@/api/user/types'
+import { UserCategory, UserListRes, UserListType } from '@/api/user/types'
 import { CustomSuspense } from '@/components/custom-suspense'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useScrollLoad } from '@/hooks/use-scroll-load'
@@ -53,7 +53,7 @@ const MentionCard = ({ c }: { c: UserListRes[UserListType.Mentions] }) => {
       <div className="flex flex-col ml-3">
         <div className="flex items-center flex-wrap">
           <Link
-            href={`${Routes.Account}/${c.user.wallet_address}`}
+            href={`${Routes.Account}/${c.user.wallet_address}?t=${UserCategory.User}`}
             className="font-bold text-black hover:underline"
           >
             {c.user?.name}

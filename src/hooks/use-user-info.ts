@@ -5,82 +5,121 @@ import { useDisconnect } from 'wagmi'
 import { userApi } from '@/api/user'
 import { useUserStore } from '@/stores/use-user-store'
 import { dynamicToken } from '@/config/localstorage'
-import { useIsLoggedIn } from '@dynamic-labs/sdk-react-core'
+import { useDynamicContext, useIsLoggedIn } from '@dynamic-labs/sdk-react-core'
 import { useRouter } from 'next/router'
+import { Routes } from '@/routes'
+import { UserCategory } from '@/api/user/types'
+import { aiApi } from '@/api/ai'
+import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 // import { useSignLogin } from './use-sign-login'
 
-export const useUserInfo = (addr?: string) => {
-  const { userInfo, setUserInfo } = useUserStore()
+interface RefetchUserInfoProps {
+  userId: string
+  isOther: boolean
+}
+
+export const useUserInfo = () => {
+  const { userInfo, otherUserInfo, agentInfo, setUserInfo, setOtherUserInfo, setAgentInfo } = useUserStore()
   const router = useRouter()
-  const token = typeof window !== 'undefined' ? localStorage.getItem(dynamicToken) : ''
+
+  const { t } = useTranslation()
 
   const isLoggedIn = useIsLoggedIn()
+  const { user } = useDynamicContext()
+
 
   const [isFetchingUserInfo, setIsFetchingUserInfo] = useState(false)
-  // Query other user info.
-  // const {
-  //   data: otherUserInfo,
-  //   isFetching: isFetchingOtherUserInfo,
-  //   refetch: refetchOtherUserInfo,
-  // } = useQuery({
-  //   enabled: false,
-  //   queryKey: [userApi.getOtherInfo.name, addr],
-  //   queryFn: () => userApi.getOtherInfo(addr!),
-  //   // enabled: !!addr,
-  // })
+  const [isFetchingAgentInfo, setIsFetchingAgentInfo] = useState(false)
 
-
-  const refetchUserInfo = () => {
+  const refetchUserInfo = async ({
+    userId,
+    isOther,
+  }: RefetchUserInfoProps) => {
     setIsFetchingUserInfo(true)
-    userApi.getInfo().then((res) => {
-      setUserInfo(res.data)
-    }).finally(() => {
+    try {
+      const res = await userApi.getInfo(userId)
+      if (isOther) {
+        setOtherUserInfo(res.data)
+      } else {
+        setUserInfo(res.data)
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
       setIsFetchingUserInfo(false)
-    })
+    }
   }
 
-  // // Query my info.
-  // const {
-  //   data: userInfo,
-  //   isFetching: isFetchingUserInfo,
-  //   refetch: refetchUserInfo,
-  // } = useQuery({
-  //   enabled: false,
-  //   queryKey: [userApi.getInfo.name],
-  //   queryFn: () => userApi.getInfo(),
-  // })
-
-  // Update latest user info if it's not null.
-  // useEffect(() => {
-  //   if (!userInfo?.data) return
-  //   setUserInfo(userInfo.data)
-  // }, [userInfo])
-
-  // logout if has not token.
-  useEffect(() => {
-    if (!!token) return
-    // logout()
-    // disconnect()
-  }, [token])
-
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      refetchUserInfo()
-    } else {
-      if (userInfo?.user?.id) {
-        setUserInfo(null)
-        router.push('/')
-      }
+  const refetchAgentInfo = async (agentId: string) => {
+    setIsFetchingAgentInfo(true)
+    try {
+      const res = await aiApi.getAgentInfo(agentId)
+      setAgentInfo(res.data)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsFetchingAgentInfo(false)
     }
-  }, [isLoggedIn])
+  }
+
+  useEffect(() => {
+    console.log('isLoggedIn refetchUserInfo')
+    if (isLoggedIn && !isFetchingUserInfo && !userInfo?.user_id && user?.userId) {
+      refetchUserInfo({ userId: user.userId, isOther: false })
+      return
+    }
+
+    if (!isLoggedIn && userInfo?.user_id) {
+      setUserInfo(null)
+      router.push('/')
+    }
+  }, [isLoggedIn, user])
+
+  useEffect(() => {
+    const userId = router.query.uid
+    const type = router.query.t
+
+    if (type === UserCategory.Agent) return
+    if (!userId) return
+
+    if (router.pathname.startsWith(Routes.Account) && userId !== otherUserInfo?.user_id) {
+      refetchUserInfo({
+        userId: userId as string,
+        isOther: true,
+      })
+    }
+
+  }, [router.query.uid])
+
+
+  useEffect(() => {
+    const agentId = router.query.uid
+    const type = router.query.t
+    if (type && type === UserCategory.Agent && router.pathname.startsWith(Routes.Account)) {
+      refetchAgentInfo(agentId as string)
+    }
+
+  }, [router.query.uid])
+
+
+  // useEffect(() => {
+  //   if (!userInfo?.user_id) {
+  //     router.push('/')
+  //     toast.error(t('no.login'))
+  //   }
+  // }, [userInfo])
 
   return {
     userInfo: userInfo,
+    otherUserInfo,
     // otherUserInfo: otherUserInfo?.data,
     isFetchingUserInfo,
     // isFetchingOtherUserInfo,
     refetchUserInfo,
     // refetchOtherUserInfo,
+    agentInfo,
+    isFetchingAgentInfo,
+    refetchAgentInfo,
   }
 }

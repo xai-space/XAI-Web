@@ -24,6 +24,7 @@ export const ArticleImages = ({ images }: Props) => {
         {images.map((url) => {
           return (
             <img
+              key={url}
               src={`${staticUrl}${url}`}
               alt="image"
               className={cn(

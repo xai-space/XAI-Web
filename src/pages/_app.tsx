@@ -1,7 +1,6 @@
 'use-client'
 
 import Head from 'next/head'
-import Script from 'next/script'
 import { Buffer } from 'buffer'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'

@@ -1,4 +1,4 @@
-import { defaultUserLogo } from '@/config/link'
+import { defaultAgentLogo, defaultUserLogo } from '@/config/link'
 import { Avatar } from './ui/avatar'
 import { ChangeEvent, ReactEventHandler, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -12,12 +12,13 @@ import { feedApi } from '@/api/feed'
 import { defaultUserId } from '@/config/base'
 import { toast } from 'sonner'
 import { useArticleStore } from '@/stores/use-article-store'
-import { FeedListRes } from '@/api/feed/types'
+import { FeedListItem } from '@/api/feed/types'
 import { staticUrl } from '@/config/url'
 import { cloneDeep, isEqual } from 'lodash'
+import { useUserStore } from '@/stores/use-user-store'
 
 interface Props {
-  editArticle?: FeedListRes
+  editArticle?: FeedListItem
   onPosted: () => void
 }
 
@@ -28,7 +29,7 @@ export const PublishPost = ({ editArticle, onPosted }: Props) => {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const { feedList, setFeedList } = useArticleStore()
-
+  const { userInfo } = useUserStore()
   const isCreate = !editArticle
 
   const { closeItem, checkCount, blobUrl, onSubmitImg, onChangeUpload } =
@@ -91,13 +92,15 @@ export const PublishPost = ({ editArticle, onPosted }: Props) => {
   }
 
   const submitDisable = () => {
+    console.log(editArticle?.images, editArticle2?.images)
+
     if (
       !isCreate &&
       // oldContent === newContent
-      (editArticle.content == value ||
-        // image1 === image2 && newImage = 0
-        (isEqual(editArticle?.images, editArticle2?.images) &&
-          blobUrl.length === 0))
+      editArticle.content == value &&
+      // image1 === image2 && newImage = 0
+      isEqual(editArticle?.images, editArticle2?.images) &&
+      blobUrl.length === 0
     ) {
       return true
     }
@@ -146,9 +149,13 @@ export const PublishPost = ({ editArticle, onPosted }: Props) => {
       <div className="flex">
         <Avatar
           src={
-            editArticle2?.agent?.logo
-              ? `${staticUrl}${editArticle2?.agent?.logo}`
-              : defaultUserLogo
+            isCreate
+              ? userInfo?.logo
+                ? `${staticUrl}${userInfo?.logo}`
+                : defaultUserLogo
+              : editArticle2?.user?.logo
+              ? `${staticUrl}${editArticle2?.user?.logo}`
+              : defaultAgentLogo
           }
           alt="Logo"
         />
@@ -171,7 +178,7 @@ export const PublishPost = ({ editArticle, onPosted }: Props) => {
                     alt="Logo"
                     className="rounded-md w-full h-full object-cover max-h-[15vh]"
                   />
-                  <div className="absolute right-0 top-0 bg-black/50 border-dashed border border-gray-500 rounded-full">
+                  <div className="absolute right-1 top-1 bg-black/50 border-dashed border border-gray-500 rounded-full">
                     <IoClose
                       className="cursor-pointer"
                       size={20}
@@ -193,7 +200,7 @@ export const PublishPost = ({ editArticle, onPosted }: Props) => {
                     alt="Logo"
                     className="rounded-md w-full h-full object-cover max-h-[15vh]"
                   />
-                  <div className="absolute right-0 top-0 bg-black/50 border-dashed border border-gray-500 rounded-full">
+                  <div className="absolute right-1 top-1 bg-black/50 border-dashed border border-gray-500 rounded-full">
                     <IoClose
                       className="cursor-pointer"
                       size={20}

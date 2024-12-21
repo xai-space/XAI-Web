@@ -15,17 +15,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useUserStore } from '@/stores/use-user-store'
 
 export const FollowDesktop = () => {
   const { t } = useTranslation()
   const [tab, setTab] = useState(UserListType.Following)
-  const { isOtherUser, followersResults, followingResults, refetchFollow } =
+  const { isOtherUser, isAgent, followers, followingResults, refetchFollow } =
     useAccountContext()
-  const {
-    followers,
-    isLoading: isLoadingFollowers,
-    isFetching: isFetchingFollowers,
-  } = followersResults
+  const { userInfo, otherUserInfo } = useUserStore()
+  // const {
+  //   agent,
+  //   user,
+  //   // followers,
+  //   // isLoading: isLoadingFollowers,
+  //   // isFetching: isFetchingFollowers,
+  // } = followersResults
+
   const {
     following,
     isLoading: isLoadingFollowing,
@@ -38,7 +43,7 @@ export const FollowDesktop = () => {
     <Dialog>
       <div
         className="flex items-center justify-start"
-        style={{ margin: '0 10px 10px 10px' }}
+        style={{ margin: '0 10px 10px 0px' }}
       >
         <DialogTrigger asChild>
           <Button
@@ -49,7 +54,9 @@ export const FollowDesktop = () => {
             className="shadow-none pl-0 !border-none"
           >
             <span className="space-x-1 text-base">
-              <span className="font-bold">{followers.total}</span>
+              <span className="font-bold">
+                {otherUserInfo?.follower_count ?? 0}
+              </span>
               <span className="text-blue-600">{t('followers')}</span>
             </span>
           </Button>
@@ -63,7 +70,9 @@ export const FollowDesktop = () => {
             className="shadow-none !border-none"
           >
             <span className="space-x-1 text-base">
-              <span className="font-bold ">{following.total}</span>
+              <span className="font-bold ">
+                {otherUserInfo?.follow_count ?? 0}
+              </span>
               <span className="text-blue-600">{t('following')}</span>
             </span>
           </Button>
@@ -85,22 +94,16 @@ export const FollowDesktop = () => {
               : t('following')}
           </DialogTitle>
         </DialogHeader>
+        {/* <FollowersCards
+          // total={following.total}
+          // isLoading={isLoadingFollowers}
+          // isPending={isFetchingFollowers}
+          onCardClick={() => closeRef.current?.click()}
+        /> */}
         {isFollowers ? (
-          <FollowersCards
-            cards={followers.list}
-            total={following.total}
-            isLoading={isLoadingFollowers}
-            isPending={isFetchingFollowers}
-            onCardClick={() => closeRef.current?.click()}
-          />
+          <FollowersCards onCardClick={() => closeRef.current?.click()} />
         ) : (
-          <FollowingCards
-            cards={following.list}
-            total={followers.total}
-            isLoading={isLoadingFollowing}
-            isPending={isFetchingFollowing}
-            onCardClick={() => closeRef.current?.click()}
-          />
+          <FollowingCards onCardClick={() => closeRef.current?.click()} />
         )}
       </DialogContent>
     </Dialog>

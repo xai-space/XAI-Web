@@ -26,14 +26,19 @@ interface Result {
 
 interface AgentCardListProps {
   isAll: boolean
+  isOtherUser?: boolean
 }
 
-export const AgentCardList = ({ isAll }: AgentCardListProps) => {
+export const AgentCardList = ({
+  isAll,
+  isOtherUser = false,
+}: AgentCardListProps) => {
   const { t } = useTranslation()
-  const { userInfo } = useUserStore()
+  const { userInfo, otherUserInfo } = useUserStore()
   const [delAgent, setDelAgent] = useState<AgentInfoResDataBase | undefined>(
     undefined
   )
+
   const { setAgentInfo } = useAIAgentStore()
   const { push } = useRouter()
 
@@ -44,15 +49,17 @@ export const AgentCardList = ({ isAll }: AgentCardListProps) => {
       limit: 20,
     }
 
-    if (!isAll && userInfo?.user.id) {
-      bodyData.user_id = userInfo?.user.id
+    const userId = isOtherUser ? otherUserInfo?.user_id : userInfo?.user_id
+
+    if (!isAll && userId) {
+      bodyData.user_id = userId
     }
 
     const { data } = await aiApi.getAgentList(bodyData)
 
     return {
-      list: data,
-      noMore: data.length !== 20,
+      list: data.list,
+      noMore: data.list.length !== 20,
     }
   }
 
@@ -152,7 +159,7 @@ export const AgentCardList = ({ isAll }: AgentCardListProps) => {
                       {agent.description}
                     </div>
                     <div className="text-gray-400 text-sm">
-                      {/* @{agent.user_id} */}
+                      {/* @{agent.id} */}
                     </div>
                   </div>
                 </div>
@@ -165,7 +172,7 @@ export const AgentCardList = ({ isAll }: AgentCardListProps) => {
       {loading || loadingMore ? (
         <ListLoading />
       ) : data?.noMore && !data.list.length ? (
-        <span>{t('no.have.agent')}</span>
+        <span>{!isOtherUser ? t('no.have.agent') : t('other.no.agent')}</span>
       ) : null}
 
       <AgentDeleteDialog

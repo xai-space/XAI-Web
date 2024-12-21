@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ImageIcon } from '@radix-ui/react-icons'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import { toast } from 'sonner'
 import { nanoid } from 'nanoid'
 import { useAccount } from 'wagmi'
@@ -48,7 +48,7 @@ export const CommentForm = (props: Props) => {
     comment: createField({}),
   })
   const inputRef = useRef<HTMLInputElement>(null)
-  const { url, file, isUploading, onChangeUpload, clearFile } = useUploadImage({
+  const { url, isUploading, onChangeUpload, clearFile } = useUploadImage({
     inputEl: inputRef.current,
   })
   // Generate unique id.
@@ -70,7 +70,9 @@ export const CommentForm = (props: Props) => {
       return
     }
 
-    onComment?.(comment, [], url)
+    const img = !Array.isArray(url) ? url?.url : url?.[0]?.url
+
+    onComment?.(comment, [], img)
     updateField('comment', { value: '' })
     clearFile()
   }
@@ -134,7 +136,9 @@ export const CommentForm = (props: Props) => {
           className="hidden ml-2"
         />
       </div>
-      {file && <p className="truncate text-gray-500">{file?.name}</p>}
+      {isArray(url) && (
+        <p className="truncate text-gray-500">{url[0]?.filename}</p>
+      )}
     </form>
   )
 }

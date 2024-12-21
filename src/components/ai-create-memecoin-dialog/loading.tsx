@@ -78,7 +78,7 @@ export const AICreateMemecoinDialogLoading = () => {
 
   useEffect(() => {
     if (loadingInfoDialog && info?.name !== undefined && !loadingInfo) {
-      if (userStore.userInfo?.id == null) {
+      if (userStore.userInfo?.user_id == null) {
         setLoadingInfoDialog(false)
         checkForConnect()
         return

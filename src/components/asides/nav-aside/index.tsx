@@ -29,6 +29,7 @@ import {
   NavigationMenuList,
 } from '@/components/ui/navigation-menu'
 import { joinPaths } from '@/utils'
+import { get } from 'lodash-es'
 import { useResponsive } from '@/hooks/use-responsive'
 import Logo from '@/components/logo'
 import SocialLinks from '@/components/social-links'
@@ -37,7 +38,9 @@ import RewardButton from '@/components/reward-button'
 import { useAIAgentStore } from '@/stores/use-chat-store'
 import { PublishPostDialog } from '@/components/publish-post-dialog'
 import { DynamicConnectButton } from '@dynamic-labs/sdk-react-core'
-
+import { UserCategory } from '@/api/user/types'
+import { getUnreadNotices } from '@/api/user'
+import { useRequest } from 'ahooks'
 interface Props {
   collapseSize?: keyof ReturnType<typeof useResponsive>
 }
@@ -59,7 +62,11 @@ export const NavAside = ({
   const userNavs = [
     {
       title: t('profile'),
-      path: joinPaths(Routes.Account, userInfo?.wallet_address || ''),
+      path: joinPaths(
+        Routes.Account,
+        userInfo?.user_id || '',
+        `?t=${UserCategory.User}`
+      ),
       icon: <FaRegUser />,
       iconActive: <FaUser />,
       isActive: pathname.includes(Routes.Account),
@@ -67,6 +74,13 @@ export const NavAside = ({
   ]
 
   const navs = [
+    {
+      title: t('Coin'),
+      path: Routes.Main,
+      icon: <RiRocketLine />,
+      iconActive: <RiRocketFill />,
+      isActive: pathname === Routes.Main,
+    },
     {
       title: 'AI Agent',
       path: sessionId
@@ -83,8 +97,16 @@ export const NavAside = ({
       iconActive: <MdOutlineArticle />,
       isActive: pathname === Routes.Feed,
     },
+    // {
+    //   title: t('award'),
+    //   path: Routes.Reward,
+    //   icon: <IoDiamondOutline />,
+    //   iconActive: <IoDiamond />,
+    //   isActive: pathname === Routes.Reward,
+    // },
     {
       title: t('Notification'),
+      id: 'notice',
       path: Routes.Notification,
       icon: <RiNotification3Line />,
       iconActive: <RiNotification3Fill />,
@@ -96,6 +118,13 @@ export const NavAside = ({
     setIsCollapsed(responsive[collapseSize])
   }, [responsive, collapseSize])
 
+  // console.log('xixoioox..')
+
+  const { data: noticeCount } = useRequest(getUnreadNotices, {
+    onSuccess: (data) => {
+      // console.log('noticeCount:', data)
+    },
+  })
   return (
     <aside
       className={cn(
@@ -110,14 +139,27 @@ export const NavAside = ({
           showMeme
           showLogo={!isCollapsed}
           className="w-28"
-          linkClass="pl-1 relative"
-          betaClass={isCollapsed ? 'absolute -bottom-5' : ''}
+          linkClass={isCollapsed ? 'relative flex item-center' : 'relative'}
+          betaClass={isCollapsed ? 'absolute -bottom-5 ml-1' : ''}
         />
-        <div className="pt-2 space-y-4">
+        <div
+          className={cn(
+            'pt-2 space-y-3',
+            isCollapsed && 'mt-5 flex flex-col items-center'
+          )}
+        >
           <NavigationMenu className="grid grid-cols-1 max-w-full">
-            <NavigationMenuList className="grid grid-cols-1 space-x-0 space-y-3">
+            <NavigationMenuList
+              className={cn(
+                'grid grid-cols-1 space-x-0 space-y-3',
+                isCollapsed && 'space-y-2'
+              )}
+            >
               {navs.map((n, i) => (
-                <NavigationMenuItem key={i} className="w-full cursor-pointer">
+                <NavigationMenuItem
+                  key={i}
+                  className={cn('w-full relative', isCollapsed && 'w-auto')}
+                >
                   <NavigationMenuLink
                     className={cn(
                       'border-[15px] text-lg w-full flex justify-start space-x-2 pl-2 cursor-pointer bg-clip-padding font-normal hover:opacity-90',
@@ -133,6 +175,11 @@ export const NavAside = ({
                   >
                     {n.isActive ? n.iconActive : n.icon}
                     {!isCollapsed && <span>{n.title}</span>}
+                    {n.id === 'notice' && (
+                      <div className="absolute top-1 -left-1 flex px-1 justify-center items-center text-center text-white rounded-full text-[12px] bg-red-500">
+                        {get(noticeCount, 'data.count', '')}
+                      </div>
+                    )}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}
@@ -142,29 +189,27 @@ export const NavAside = ({
           <div
             className={cn(
               'flex justify-between items-center mt-1',
-              isCollapsed && 'flex-col space-x-0 space-y-1'
+              isCollapsed && 'flex-col justify-center space-x-0 space-y-2'
             )}
           >
             <div
               className={cn(
-                'flex justify-center items-center space-x-1 ',
+                'flex justify-center items-center space-x-1',
                 className
               )}
               {...props}
             >
-              <DynamicConnectButton>
-                <Button
-                  type="button"
-                  size={isCollapsed ? 'icon' : 'icon-lg'}
-                  title={t('change.language')}
-                  onClick={() =>
-                    i18n.language === 'en' ? setLang('zh') : setLang('en')
-                  }
-                  className="border-transparent sm:hover:border-black"
-                >
-                  <IoLanguageOutline size={20} />
-                </Button>
-              </DynamicConnectButton>
+              <Button
+                type="button"
+                size={isCollapsed ? 'icon' : 'icon-lg'}
+                title={t('change.language')}
+                onClick={() =>
+                  i18n.language === 'en' ? setLang('zh') : setLang('en')
+                }
+                className="border-transparent sm:hover:border-black w-full"
+              >
+                <IoLanguageOutline size={20} />
+              </Button>
             </div>
 
             <SocialLinks
@@ -172,15 +217,14 @@ export const NavAside = ({
               tg={officialLinks.tg}
               whitepaper={officialLinks.whitepaper}
               size={20}
-              buttonProps={{ size: isCollapsed ? 'icon' : 'icon-lg' }}
-              className={cn(
-                'justify-start',
-                isCollapsed && 'flex-col space-x-0 space-y-1'
-              )}
+              buttonProps={{
+                size: isCollapsed ? 'icon' : 'icon-lg',
+                className: isCollapsed ? 'w-full' : '',
+              }}
             />
           </div>
 
-          <PublishPostDialog />
+          <PublishPostDialog isCollapsed={isCollapsed} />
         </div>
       </div>
 

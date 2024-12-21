@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils'
 // import { useSignLogin } from '@/hooks/use-sign-login'
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core'
 import { IoWalletOutline } from 'react-icons/io5'
+import { UserCategory } from '@/api/user/types'
 
 export const AccountDropdown = () => {
   const { t } = useTranslation()
@@ -46,14 +47,14 @@ export const AccountDropdown = () => {
           {!isMobile && (
             <Avatar
               src={userInfo?.logo || ''}
-              fallback={userInfo?.name.slice(-2)}
+              fallback={userInfo?.name?.slice(-2)}
               size={26}
               className="border-2 border-black"
             />
           )}
           <span>
             {userInfo?.name
-              ? userInfo?.name.slice(0, 4)
+              ? userInfo?.name?.slice(0, 4)
               : fmt.addr(userInfo?.name || primaryWallet?.address, {
                   preLen: 2,
                   sufLen: 4,
@@ -70,7 +71,9 @@ export const AccountDropdown = () => {
         variant="ghost"
         shadow="none"
         onClick={() =>
-          router.push(`${Routes.Account}/${userInfo?.wallet_address}`)
+          router.push(
+            `${Routes.Account}/${userInfo?.user_id}?t=${UserCategory.User}`
+          )
         }
       >
         <LuUser size={20} />

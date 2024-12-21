@@ -4,13 +4,14 @@ import { Address, parseEther } from 'viem'
 import { ConfigChainId, wagmiConfig } from '@/config/wagmi'
 import { BI_ZERO } from '@/constants/number'
 import { reportException } from '@/errors'
-import { bcAbiMap } from '@/contract/abi/bonding-curve'
+// import { bcAbiMap } from '@/contract/abi/bonding-curve'
 import { useTokenContext } from '@/contexts/token'
 
 export const useEvmTradeAmount = (chainId: number, tokenAddr: Address) => {
   const { tokenInfo: { bond_version, bond_address } = {} } = useTokenContext()
   const config = {
-    abi: bcAbiMap[bond_version!],
+    // abi: bcAbiMap[bond_version!],
+    abi: [],
     address: bond_address as Address,
     chainId: chainId as ConfigChainId,
   }

@@ -7,6 +7,7 @@ import {
   AIMemeInfoQuery,
   AIMemePosterQuery,
   AgentInfoResDataBase,
+  AgentListRes,
   AgentResDataBase,
   AgentSessionsList,
 } from './type'
@@ -29,8 +30,9 @@ import {
   AgentUpadeRes,
   AgentUpdate,
 } from './type'
+import { userApi } from '../user/index'
 import { CommonHeaders, ContentType } from '@/hooks/use-fetch'
-import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { fetchEventSource } from '@microsoft/fetch-event-source'
 import { defaultUserId } from '@/config/base'
 
 export const aiApi = {
@@ -57,7 +59,7 @@ export const aiApi = {
 
   uploadImage: (formData: FormData) => {
     return api.POST<ApiResponse<{ filename: string; url: string }>>(
-      '/v1/playground/upload',
+      '/agent/v1/playground/upload',
       {
         body: formData,
         headers: {
@@ -69,7 +71,7 @@ export const aiApi = {
 
   createAgent: async (data: AgentCreate) => {
     return api.POST<ApiResponse<AgentResDataBase>>(
-      '/v1/playground/agent/create',
+      '/agent/v1/playground/agent/create',
       {
         body: data,
       }
@@ -78,7 +80,7 @@ export const aiApi = {
 
   updateAgent: async (data: AgentCreate) => {
     return api.PUT<ApiResponse<AgentResDataBase>>(
-      '/v1/playground/agent/update',
+      '/agent/v1/playground/agent/update',
       {
         body: data,
       }
@@ -86,32 +88,30 @@ export const aiApi = {
   },
 
   deleteAgent: async (agentId: string) => {
-    return api.POST<ApiResponse>('/v1/playground/agent/delete', {
+    return api.POST<ApiResponse>('/agent/v1/playground/agent/delete', {
       body: {
         agent_id: agentId,
-      }
+      },
     })
   },
 
   getAgentInfo: async (agentId: string) => {
     return api.GET<ApiResponse<AgentInfoResDataBase>>(
-      `/v1/playground/agent/${agentId}`,
+      `/agent/v1/playground/agent/${agentId}`
     )
   },
 
   getAgentList: (query: AgentListReq) => {
-    return api.GET<ApiResponse<AgentInfoResDataBase[]>>(
-      '/v1/playground/agent/list' + qs.stringify(query)
+    return api.GET<ApiResponse<AgentListRes>>(
+      '/agent/v1/playground/agent/list' + qs.stringify(query)
     )
   },
 
   chat: async (data: AgentChat) => {
-    // return fetchEventSource('/v1/playground/agent/chat', {
-
+    // return fetchEventSource('/agent/v1/playground/agent/chat', {
     // })
-
     // return api.EVENTSOURCE<ApiResponse<AgentChatRes>>(
-    //   '/v1/playground/agent/chat',
+    //   '/agent/v1/playground/agent/chat',
     //   {
     //     body: data,
     //   }
@@ -120,7 +120,7 @@ export const aiApi = {
 
   getAllSession: async (data: AgentSessionsAll) => {
     return api.POST<ApiResponse<AgentSessionsAllRes[]>>(
-      '/v1/playground/agent/sessions/all',
+      '/agent/v1/playground/agent/sessions/all',
       {
         body: data,
       }
@@ -129,7 +129,7 @@ export const aiApi = {
 
   sessionReName: async (data: AgentSessionsRename) => {
     return api.POST<ApiResponse<AgentSessionsRenameRes>>(
-      '/v1/playground/agent/session/rename',
+      '/agent/v1/playground/agent/session/rename',
       {
         body: data,
       }
@@ -138,7 +138,7 @@ export const aiApi = {
 
   getSessionHistory: async (data: AgentSessionsHistory, session_id: string) => {
     return api.POST<ApiResponse<AgentSessionsHistoryRes>>(
-      `/v1/playground/agent/sessions/${session_id}`,
+      `/agent/v1/playground/agent/sessions/${session_id}`,
       {
         body: data,
       }
@@ -147,7 +147,7 @@ export const aiApi = {
 
   getSessionList: async (agentId: string, page = 1, limit = 10) => {
     return api.POST<ApiResponse<AgentSessionsList[]>>(
-      `/v1/playground/agent/sessions/all?page=${page}&limit=${limit}`,
+      `/agent/v1/playground/agent/sessions/all?page=${page}&limit=${limit}`,
       {
         body: {
           agent_id: agentId,
@@ -158,10 +158,11 @@ export const aiApi = {
 
   deleteSession: async (data: AgentSessionsDelete) => {
     return api.POST<ApiResponse<AgentSessionsDeleteRes>>(
-      `/v1/playground/agent/session/delete`,
+      `/agent/v1/playground/agent/session/delete`,
       {
         body: data,
       }
     )
   },
+  getNotifications: userApi.getNotifications,
 }

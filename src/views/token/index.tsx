@@ -58,7 +58,8 @@ TokenPage.getLayout = (page: ReactNode) => (
     newsAsideClass="!hidden"
     navAsideProps={{ collapseSize: 'isXl2' }}
   >
-    <PageFallback>{page}</PageFallback>
+    {/* <PageFallback>{page}</PageFallback> */}
+    {page}
   </PrimaryLayout>
 )
 

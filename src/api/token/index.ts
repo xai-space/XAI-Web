@@ -17,12 +17,13 @@ import type {
   TokenListReq,
 } from './types'
 
+
 export const tokenApi = {
   getConfig: () => {
     return api.GET<ApiResponse<TokenConfigRes>>('/api/v2/coin/configure')
   },
   createToken: (req: TokenCreateReq) => {
-    return api.POST<ApiResponse<TokenCreateRes>>('/api/v2/coin/create', {
+    return api.POST<ApiResponse<TokenCreateRes>>('/api/v2/coins/create', {
       body: req,
     })
   },

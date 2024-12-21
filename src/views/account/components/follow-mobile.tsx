@@ -19,13 +19,13 @@ import { FollowingCards } from './following-cards'
 export const FollowMoblie = () => {
   const { t } = useTranslation()
   const [tab, setTab] = useState(UserListType.Following)
-  const { isOtherUser, followersResults, followingResults, refetchFollow } =
+  const { isOtherUser, followers, followingResults, refetchFollow } =
     useAccountContext()
-  const {
-    followers,
-    isLoading: isLoadingFollowers,
-    isFetching: isFetchingFollowers,
-  } = followersResults
+  // const {
+  //   followers,
+  //   isLoading: isLoadingFollowers,
+  //   isFetching: isFetchingFollowers,
+  // } = followersResults
   const {
     following,
     isLoading: isLoadingFollowing,
@@ -49,8 +49,8 @@ export const FollowMoblie = () => {
             className="!border-none shadow-none p-0"
           >
             <span className="space-x-1 text-sm flex flex-col">
-              <span className="font-bold ">{followers.total}</span>
-              <span className="text-blue-600">{t('followers')}</span>
+              {/* <span className="font-bold ">{followers.total}</span> */}
+              <span className="text-blue-600">0 {t('followers')}</span>
             </span>
           </Button>
         </SheetTrigger>
@@ -63,7 +63,7 @@ export const FollowMoblie = () => {
             className="shadow-none !border-none p-0"
           >
             <span className="space-x-1 text-sm flex flex-col">
-              <span className="font-bold ">{following.total}</span>
+              <span className="font-bold ">{following?.total}</span>
               <span className="text-blue-600">{t('following')}</span>
             </span>
           </Button>
@@ -88,7 +88,7 @@ export const FollowMoblie = () => {
               : t('following')}
           </SheetTitle>
         </SheetHeader>
-        {isFollowers ? (
+        {/* {isFollowers ? (
           <FollowersCards
             cards={followers.list}
             total={following.total}
@@ -104,7 +104,7 @@ export const FollowMoblie = () => {
             isPending={isFetchingFollowing}
             onCardClick={() => closeRef.current?.click()}
           />
-        )}
+        )} */}
       </SheetContent>
     </Sheet>
   )

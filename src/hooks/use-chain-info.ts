@@ -13,10 +13,10 @@ export const useChainInfo = (chainName_: string | null | undefined) => {
 
   const chianInfo = useMemo(() => {
     const chain = chainsMap[chainName_ || '']
-    const chainName = chain?.name || ''
+    const chainName = chain?.id || ''
     const chainId = Number(chain?.id || 0)
     const configChainId = chainId as ConfigChainId
-    const network = chain?.network || Network.Evm
+    const network = chain?.network_type || Network.Evm
 
     return {
       ...chain,

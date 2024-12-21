@@ -59,7 +59,7 @@ export const useChatStream = () => {
         const newSessions = sessions.concat([chunk])
         setSessions(newSessions)
 
-        fetchEventSource(apiUrl.xai + '/v1/playground/agent/chat', {
+        fetchEventSource(apiUrl.xai + '/agent/v1/playground/agent/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export const useChatStream = () => {
             body: JSON.stringify({
                 "agent_id": agentInfo?.agent_id,
                 "message": question,
-                "user_id": defaultUserId,
+                "id": defaultUserId,
                 "session_id": query.sid,
                 "stream": true
             }),

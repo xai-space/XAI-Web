@@ -10,19 +10,26 @@ import {
   useIsLoggedIn,
 } from '@dynamic-labs/sdk-react-core'
 import { toast } from 'sonner'
+import { useResponsive } from 'ahooks'
+import { FaPlus } from 'react-icons/fa6'
+import { cn } from '@/lib/utils'
 
-export const PublishPostDialog = () => {
+export const PublishPostDialog = ({
+  isCollapsed,
+}: {
+  isCollapsed: boolean
+}) => {
   const { t } = useTranslation()
   const isLoggedIn = useIsLoggedIn()
   const [show, setShow] = useState(false)
 
   return (
     <>
-      <DynamicConnectButton buttonClassName="w-full">
+      <DynamicConnectButton buttonClassName={'w-full'}>
         <Button
           variant="purple"
-          className="w-full"
-          size={'lg'}
+          className={cn('w-full')}
+          size={isCollapsed ? 'icon' : 'lg'}
           onClick={(e) => {
             if (isLoggedIn) {
               e.stopPropagation()
@@ -32,7 +39,7 @@ export const PublishPostDialog = () => {
             }
           }}
         >
-          {t('publish.post')}
+          {isCollapsed ? <FaPlus size={20} /> : t('publish.post')}
         </Button>
       </DynamicConnectButton>
 

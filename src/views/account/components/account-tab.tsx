@@ -8,7 +8,7 @@ import { MentionCards } from './mention-cards'
 import { CommentCards } from '@/components/comment-cards'
 import { TokenCards } from '@/components/token-cards'
 import { useUserList } from '../hooks/use-user-list'
-import { UserListType } from '@/api/user/types'
+import { UserCategory, UserListType } from '@/api/user/types'
 import { Routes } from '@/routes'
 import { useAccountContext } from '@/contexts/account'
 import { cn } from '@/lib/utils'
@@ -23,16 +23,17 @@ export const AccountTab = () => {
   const { query, ...router } = useRouter()
 
   const tab = String(query.tab || UserListType.Agent)
-  const myAccountTabs = [
-    {
-      label: t('comments'),
-      value: UserListType.Comments,
-    },
-    {
-      label: t('mentions'),
-      value: UserListType.Mentions,
-    },
-  ]
+  // const myAccountTabs = [
+  //   {
+  //     label: t('comments'),
+  //     value: UserListType.Comments,
+  //   },
+  //   {
+  //     label: t('mentions'),
+  //     value: UserListType.Mentions,
+  //   },
+  // ]
+
   const tabs = [
     // {
     //   label: t('token.created'),
@@ -43,7 +44,7 @@ export const AccountTab = () => {
     //   value: UserListType.CoinsHeld,
     // },
     {
-      label: t('my.agent'),
+      label: t('agent.list'),
       value: UserListType.Agent,
     },
     {
@@ -57,31 +58,31 @@ export const AccountTab = () => {
     // ...(isOtherUser ? [] : myAccountTabs),
   ]
 
-  const {
-    tokenHeld,
-    comments,
-    mentions,
-    isLoading,
-    isFetching,
-    fetchNextPage,
+  // const {
+  //   tokenHeld,
+  //   comments,
+  //   mentions,
+  //   isLoading,
+  //   isFetching,
+  //   // fetchNextPage,
 
-    myTokens,
-    myTokenTotal,
-    isLoadingMyTokens,
-    isFetchingMyTokens,
-    fetchNextMyTokens,
-  } = useUserList(Number(tab), isOtherUser)
+  //   myTokens,
+  //   myTokenTotal,
+  //   isLoadingMyTokens,
+  //   isFetchingMyTokens,
+  //   fetchNextMyTokens,
+  // } = useUserList(Number(tab), isOtherUser)
 
   return (
     <Tabs
-      className="w-full mt-4 max-sm:mt-0 max-lg:px-3"
+      className="w-full mt-0 max-sm:mt-0 max-lg:px-3"
       value={tab}
       onValueChange={(value) => {
-        if (!query.address) return
+        if (!query.uid) return
         router.push(
           {
-            pathname: joinPaths(Routes.Account, query.address as string),
-            query: { tab: value },
+            pathname: joinPaths(Routes.Account, query.uid as string),
+            query: { tab: value, t: query.t },
           },
           undefined,
           { shallow: true }
@@ -115,7 +116,7 @@ export const AccountTab = () => {
       </TabsList>
 
       {/* Token created */}
-      <TabsContent value={UserListType.CoinsCreated.toString()}>
+      {/* <TabsContent value={UserListType.CoinsCreated.toString()}>
         <TokenCards
           className="md:grid-cols-2 xl:grid-cols-3"
           cards={myTokens}
@@ -125,10 +126,10 @@ export const AccountTab = () => {
           onFetchNext={fetchNextMyTokens}
           showSearch={false}
         />
-      </TabsContent>
+      </TabsContent> */}
 
       {/* Token held */}
-      <TabsContent value={UserListType.CoinsHeld.toString()}>
+      {/* <TabsContent value={UserListType.CoinsHeld.toString()}>
         <TokenHeldCards
           cards={tokenHeld.list}
           total={tokenHeld.total}
@@ -136,6 +137,11 @@ export const AccountTab = () => {
           isPending={isFetching}
           onFetchNext={fetchNextPage}
         />
+      </TabsContent> */}
+
+      {/* My Agent */}
+      <TabsContent value={UserListType.Agent.toString()}>
+        <AgentCardList isAll={false} />
       </TabsContent>
 
       {/* Published Posts */}
@@ -143,13 +149,8 @@ export const AccountTab = () => {
         <PostFeed className="mx-0 !w-full max-w-full" isMy={true} />
       </TabsContent>
 
-      {/* Published Posts */}
-      <TabsContent value={UserListType.Agent.toString()}>
-        <AgentCardList isAll={false} />
-      </TabsContent>
-
       {/* Only self can see. */}
-      {!isOtherUser && (
+      {/* {!isOtherUser && (
         <>
           <TabsContent value={UserListType.Comments.toString()}>
             <CommentCards
@@ -172,7 +173,7 @@ export const AccountTab = () => {
             />
           </TabsContent>
         </>
-      )}
+      )} */}
     </Tabs>
   )
 }

@@ -1,7 +1,7 @@
 import { TokenType } from '@/enums/token'
-import type { TokenVersion } from '@/contract/abi/token'
-import type { RecommendVersion } from '@/contract/abi/recommend'
-import type { BcVersion } from '@/contract/abi/bonding-curve'
+// import type { TokenVersion } from '@/contract/abi/token'
+// import type { RecommendVersion } from '@/contract/abi/recommend'
+// import type { BcVersion } from '@/contract/abi/bonding-curve'
 
 export type TokenListQueryKey = 'page' | 'page_size' | 'orderby'
 
@@ -9,10 +9,10 @@ export type TokenListReq = [TokenListQueryKey, string][]
 
 export interface TokenListItem {
   bond_address: string
-  bond_version: BcVersion
+  // bond_version: BcVersion
   chain: string
   coin_type: number
-  coin_version: TokenVersion
+  // coin_version: TokenVersion
   contract_address: string
   created_at: string
   creator_address: string
@@ -40,21 +40,34 @@ export interface TokenListItem {
   website_url: string
 }
 
+// export interface TokenCreateReq {
+//   chain: string
+//   name: string
+//   symbol: string
+//   description: string
+//   image_url: string
+//   poster_urls?: string[]
+//   twitter_url?: string
+//   telegram_url?: string
+//   website_url?: string
+//   factory_address: string
+//   coin_type?: TokenType
+
+//   // Only used for frontend
+//   marketing?: Marketing[]
+// }
+
 export interface TokenCreateReq {
   chain: string
   name: string
   symbol: string
   description: string
-  image_url: string
-  poster_urls?: string[]
-  twitter_url?: string
-  telegram_url?: string
-  website_url?: string
-  factory_address: string
-  coin_type?: TokenType
-
-  // Only used for frontend
-  marketing?: Marketing[]
+  image: string
+  posters: string[]
+  twitter: string
+  telegram: string
+  website: string
+  coin_type: number
 }
 
 export interface TokenCreateRes {
@@ -177,9 +190,12 @@ export interface TokenConfigRes {
 }
 
 export interface TokenConfigContracts {
-  bond: TokenConfigContract<BcVersion>[]
-  coin: TokenConfigContract<TokenVersion>[]
-  recommend: TokenConfigContract<RecommendVersion>[]
+  // bond: TokenConfigContract<BcVersion>[]
+  bond: TokenConfigContract<string>[]
+  // coin: TokenConfigContract<TokenVersion>[]
+  coin: TokenConfigContract<string>[]
+  // recommend: TokenConfigContract<RecommendVersion>[]
+  recommend: TokenConfigContract<string>[]
 }
 
 export interface TokenCreateConfigValue {

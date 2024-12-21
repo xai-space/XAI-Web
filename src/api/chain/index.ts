@@ -5,6 +5,6 @@ import { ChainData } from './type'
 
 export const chainApi = {
   async getChain() {
-    return api.GET<ApiResponse<ChainData[]>>('/api/v1/chain/')
+    return api.GET<ApiResponse<ChainData[]>>('/api/v2/utils/chains')
   },
 }

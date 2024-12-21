@@ -1,11 +1,17 @@
 import { Asset, NFTListRes, NetworkNFTList } from "@/api/nft"
-import { useState } from "react"
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core"
+import { useEffect, useState } from "react"
+import { isAddress } from "viem"
 
 export const useEvmNftList = () => {
     const [evmNftList, setNetworkNftList] = useState<NetworkNFTList[]>([])
-    const address = '0x2192c06a46f2c0f851fbac993413ca49735160cc'
+    const { primaryWallet } = useDynamicContext()
+
+    const [loading, setLoading] = useState(false)
 
     const getEVMNFTList = async () => {
+        const address = primaryWallet?.address
+        setLoading(true)
         const { data } = await (await fetch(`https://restapi.nftscan.com/api/v2/assets/chain/${address}?chain=eth;bnb;polygon;arbitrum;optimism;zksync;linea;avalanche;fantom`, {
             headers: {
                 'X-API-KEY': 'zoDxKTSDDE2ELEm5SjWhpNsx'
@@ -21,11 +27,17 @@ export const useEvmNftList = () => {
         })
 
         setNetworkNftList(collectionAssets)
+        setLoading(false)
     }
 
+    useEffect(() => {
+        if (primaryWallet?.address && isAddress(primaryWallet.address)) {
+            getEVMNFTList()
+        }
+    }, [primaryWallet])
 
     return {
         evmNftList,
-        getEVMNFTList,
+        loading,
     }
 }

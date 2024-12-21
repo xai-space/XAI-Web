@@ -7,6 +7,14 @@ export interface AIMemeInfo {
   background?: string
 }
 
+export interface AgentInfoData {
+  agent_id: string
+  description?: string
+  logo: string
+  name: string
+  user_id: string
+}
+
 export interface AIMemeInfoQuery {
   input: string
   type?: 1 | 0
@@ -53,6 +61,11 @@ export interface AgentResDataBase {
   name: string
 }
 
+export interface AgentListRes {
+  list: AgentInfoResDataBase[]
+  total: number
+}
+
 export interface AgentInfoResDataBase {
   agent_id: string
   name: string
@@ -61,6 +74,7 @@ export interface AgentInfoResDataBase {
   user_id: string
   greeting: string
   is_public: string,
+  is_followed: boolean
   logo_identify: string
 }
 

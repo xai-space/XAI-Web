@@ -24,10 +24,10 @@ import { IoMdMore } from 'react-icons/io'
 import { useClipboard } from '@/hooks/use-clipboard'
 import { fmt } from '@/utils/fmt'
 import { useResponsive } from '@/hooks/use-responsive'
+import { useUserStore } from '@/stores/use-user-store'
 
 export const AccountInfoMoblie = (props: AccountInfoProps) => {
   const {
-    userInfo,
     isOtherUser,
     isFollowing,
     isUnfollowing,
@@ -40,6 +40,8 @@ export const AccountInfoMoblie = (props: AccountInfoProps) => {
   const { t } = useTranslation()
   const { copy } = useClipboard()
 
+  const { userInfo } = useUserStore()
+
   return (
     <div className="relative flex justify-around">
       <div className="absolute -top-[18rem] flex -right-1 space-x-2">
@@ -49,13 +51,13 @@ export const AccountInfoMoblie = (props: AccountInfoProps) => {
             shadow={'none'}
             className="flex items-center space-x-2"
             disabled={isFollowing || isUnfollowing}
-            onClick={() =>
-              userInfo?.is_follower ? unfollow(tokenAddr) : follow(tokenAddr)
-            }
+            onClick={() => {
+              // userInfo?.is_follower ? unfollow(tokenAddr) : follow(tokenAddr)
+            }}
           >
-            {userInfo?.is_follower ? <MinusIcon /> : <PlusIcon />}
+            {/* {userInfo?.is_follower ? <MinusIcon /> : <PlusIcon />} */}
             <span className="text-sm">
-              {userInfo?.is_follower ? t('unfollow') : t('follow')}
+              {/* {userInfo?.is_follower ? t('unfollow') : t('follow')} */}
             </span>
           </Button>
         ) : (
@@ -84,7 +86,7 @@ export const AccountInfoMoblie = (props: AccountInfoProps) => {
               'hover:bg-zinc-100 text-sm border border-zinc-400 cursor-pointer',
               'backdrop-blur-sm bg-white/30 text-white'
             )}
-            onClick={() => copy(userInfo?.wallet_address ?? '')}
+            // onClick={() => copy(userInfo?.wallet_address ?? '')}
           >
             <IoCopyOutline size={17} />
             <p>{t('copy.wallet.address')}</p>
@@ -95,7 +97,7 @@ export const AccountInfoMoblie = (props: AccountInfoProps) => {
         <FollowMoblie />
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
           <AccountAvatar
-            userInfo={userInfo}
+            // userInfo={userInfo}
             isOtherUser={isOtherUser}
             update={update}
             refetchUserInfo={refetchUserInfo}
@@ -104,14 +106,14 @@ export const AccountInfoMoblie = (props: AccountInfoProps) => {
           <div className="flex space-x-4 items-center">
             <HoverCardPop content={t('account.total-likes')}>
               <span className="inline-flex items-center text-red-500">
-                <HeartFilledIcon className="mr-1" /> {userInfo?.like_count || 0}
+                {/* <HeartFilledIcon className="mr-1" /> {userInfo?.like_count || 0} */}
               </span>
             </HoverCardPop>
 
             <HoverCardPop content={t('account.total-mentions')}>
               <span className="inline-flex items-center ml-1 text-white">
                 <EnvelopeClosedIcon className="mr-1" />
-                {userInfo?.mention_count || 0}
+                {/* {userInfo?.mention_count || 0} */}
               </span>
             </HoverCardPop>
 
@@ -135,7 +137,7 @@ export const AccountInfoMoblie = (props: AccountInfoProps) => {
               >
                 <DiamondIcon size={17} />
                 <span className="font-bold">
-                  {fmt.decimals(userInfo?.reward_amount) || 0}
+                  {/* {fmt.decimals(userInfo?.reward_amount) || 0} */}
                 </span>
                 <p
                   className="max-sm:hidden text-sm text-blue-600 cursor-pointer hover:underline ml-2 underline"

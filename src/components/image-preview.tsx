@@ -19,15 +19,11 @@ export const ImagePreview = ({ open, onOpenChange, imageUrl }: Props) => {
       open={open}
       onOpenChange={onOpenChange}
       contentProps={{
-        className: 'px-8',
+        className: 'px-8 max-w-[95vw] w-max',
       }}
     >
       <div className="pt-3">
-        <img
-          src={staticUrl + imageUrl}
-          alt="Image"
-          className="rounded-md max-w-[95vw] w-full"
-        />
+        <img src={staticUrl + imageUrl} alt="Image" className="rounded-md" />
       </div>
     </Dialog>
   )

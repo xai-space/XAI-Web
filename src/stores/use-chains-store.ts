@@ -32,7 +32,9 @@ export const useChainsStore = create<ChainsStore>((set, get) => ({
   svmChiansMap: {},
   tvmChainsMap: {},
 
-  setChains: (chains) => set({ chains, loadingChains: false }),
+  setChains: (chains) => {
+    set({ chains: chains, loadingChains: false })
+  },
   setChainsMap: (chains) => {
     const chainsMap: ChainsStore['chainsMap'] = {}
     const evmChainsMap: ChainsStore['evmChainsMap'] = {}
@@ -40,17 +42,19 @@ export const useChainsStore = create<ChainsStore>((set, get) => ({
     const tvmChainsMap: ChainsStore['tvmChainsMap'] = {}
 
     for (const c of chains) {
-      chainsMap[c.name] = c
+      chainsMap[c?.id] = c
 
-      if (c.network === Network.Evm) {
-        evmChainsMap[c.id] = c
-        evmChainsMap[c.name] = c
-      } else if (c.network === Network.Svm) {
-        svmChiansMap[c.id] = c
-        svmChiansMap[c.name] = c
-      } else if (c.network === Network.Tvm) {
+      if (c.network_type === Network.Evm) {
+        evmChainsMap[c?.id] = c
+        evmChainsMap[c?.evm_id] = c
+      } else if (c.network_type === Network.Svm) {
+        console.log(c);
+
+        svmChiansMap[c?.id] = c
+        svmChiansMap[c?.id] = c
+      } else if (c.network_type === Network.Tvm) {
+        tvmChainsMap[c?.id] = c
         tvmChainsMap[c.id] = c
-        tvmChainsMap[c.name] = c
       }
     }
 

@@ -2918,7 +2918,7 @@ export interface ChartingLibraryWidgetConstructor {
 	 * Constructor for the Advanced Charts Widget
 	 * @param  {ChartingLibraryWidgetOptions|TradingTerminalWidgetOptions} options - Constructor options
 	 */
-	new (options: ChartingLibraryWidgetOptions | TradingTerminalWidgetOptions): IChartingLibraryWidget;
+	new(options: ChartingLibraryWidgetOptions | TradingTerminalWidgetOptions): IChartingLibraryWidget;
 }
 export interface ChartingLibraryWidgetOptions {
 	/**
@@ -3195,10 +3195,10 @@ export interface ChartingLibraryWidgetOptions {
 	 * See more details [here](https://www.tradingview.com/charting-library-docs/latest/saving_loading/).
 	 *
 	 * ```javascript
-	 * user_id: 'public_user_id',
+	 * id: 'public_id',
 	 * ```
 	 */
-	user_id?: string;
+	id?: string;
 	/**
 	 * Set this parameter to `true` if you want the library to load the last saved chart for a user (you should implement [save/load](https://www.tradingview.com/charting-library-docs/latest/saving_loading/) first to make it work).
 	 *
@@ -11739,8 +11739,8 @@ export interface LibraryPineStudyConstructor<TPineStudyResult> {
 	/**
 	 * Custom Study constructor
 	 */
-	
-	new (): LibraryPineStudy<TPineStudyResult>;
+
+	new(): LibraryPineStudy<TPineStudyResult>;
 }
 export interface LibrarySubsessionInfo {
 	/**
@@ -16344,8 +16344,8 @@ export interface TableFormatterInputs<T extends TableFormatterInputValues = Tabl
 	prevValues?: Partial<T extends [
 		...args: infer A
 	] ? [
-		...A
-	] : never>;
+			...A
+		] : never>;
 }
 /**
  * Override properties for the Text drawing tool.
@@ -17481,298 +17481,298 @@ export type ChartActionId = "chartProperties" | "compareOrAdd" | "scalesProperti
  */
 export type ChartTypeFavorites = "Area" | "Bars" | "Candles" | "Heiken Ashi" | "Hollow Candles" | "Line" | "Line Break" | "Baseline" | "LineWithMarkers" | "Stepline" | "Columns" | "High-low";
 /** This is the list of all [featuresets](https://www.tradingview.com/charting-library-docs/latest/customization/Featuresets.md) that work in Advanced Charts */
-export type ChartingLibraryFeatureset = 
-/** Allows storing all properties (including favorites) to the localstorage @default true */
-"use_localstorage_for_settings" | 
-/** Disabling this feature hides "Favorite this item" icon for Drawings and Intervals @default true */
-"items_favoriting" | 
-/** Can be disabled to forbid storing chart properties to the localstorage while allowing to save other properties. The other properties are favorites in the Advanced Charts and Watchlist symbols and some panels states in the Trading Platform @default true @default true */
-"save_chart_properties_to_local_storage" | 
-/** Add the volume indicator upon initialisation of the chart @default true */
-"create_volume_indicator_by_default" | 
-/** Prevent the volume indicator from being recreated when an instrument or a resolution is switched @default true */
-"create_volume_indicator_by_default_once" | 
-/** Places Volume indicator on the same pane with the main series @default true */
-"volume_force_overlay" | 
-/** Determines the behavior of Zoom feature: bar under the mouse cursor stays in the same place if this feature is disabled @default true */
-"right_bar_stays_on_scroll" | 
-/** Keeps the dialogs within the chart @default true */
-"constraint_dialogs_movement" | 
-/** Enables logs @default false */
-"charting_library_debug_mode" | 
-/** This enables Drawings Toolbar in the fullscreen mode @default false */
-"side_toolbar_in_fullscreen_mode" | 
-/** Enables header widget DOM element in the fullscreen mode @default false */
-"header_in_fullscreen_mode" | 
-/** Shows bar time exactly as provided by the data feed with no adjustments @default false */
-"disable_resolution_rebuild" | 
-/** Allows chart scrolling @default true */
-"chart_scroll" | 
-/** Allows chart zooming @default true */
-"chart_zoom" | 
-/** If enabled, the chart handles horizontal pointer movements on touch screens. In this case the webpage is not scrolled. If disabled, the webpage is scrolled instead. Keep in mind that if the user starts scrolling the chart vertically or horizontally, scrolling is continued in any direction until the user releases the finger @default true */
-"horz_touch_drag_scroll" | 
-/** If enabled, the chart handles vertical pointer movements on touch screens. In this case the webpage is not scrolled. If disabled, the webpage is scrolled instead. Keep in mind that if the user starts scrolling the chart vertically or horizontally, scrolling is continued in any direction until the user releases the finger @default true */
-"vert_touch_drag_scroll" | 
-/** If enabled, chart scrolling with horizontal mouse wheel is enabled @default true */
-"mouse_wheel_scroll" | 
-/** If enabled, chart scrolling with left mouse button pressed is allowed @default true */
-"pressed_mouse_move_scroll" | 
-/** If enabled, series scaling with a mouse wheel is enabled @default true */
-"mouse_wheel_scale" | 
-/** If enabled, series scaling with pinch/zoom gestures (this option is supported on touch devices) is enabled @default true */
-"pinch_scale" | 
-/** If enabled, axis scaling with left mouse button pressed is allowed @default true */
-"axis_pressed_mouse_move_scale" | 
-/** Allows zooming in to show up to one bar in the viewport @default false */
-"low_density_bars" | 
-/** Disabling this feature allows a user to enter case-sensitive symbols @default true */
-"uppercase_instrument_names" | 
-/** Disables minimum chart width limitation @default false */
-"no_min_chart_width" | 
-/** Prevents scrolling to the left of the first historical bar @default false */
-"fix_left_edge" | 
-/** Prevents changing visible time area on chart resizing @default false */
-"lock_visible_time_range_on_resize" | 
-/** If disabled, adding a new bar zooms out the chart preserving the first visible point. Otherwise the chart is scrolled one point to the left when a new bar comes @default true */
-"shift_visible_range_on_new_bar" | 
-/** If enabled, there is a possibility to add custom resolutions @default false */
-"custom_resolutions" | 
-/** Toggles the timeline marks to display the bar's end time @default false */
-"end_of_period_timescale_marks" | 
-/** If disabled, partially visible price labels on price axis will be hidden @default true */
-"cropped_tick_marks" | 
-/** Applies symbol display mode (ticker/description) to overlay/compare studies in the status line @default false */
-"study_overlay_compare_legend_option" | 
-/** Applies symbol display mode (ticker/description) to indicator inputs in the status line @default false */
-"study_symbol_ticker_description" | 
-/** Displays Symbol Name Label when comparing Symbols @default true */
-"auto_enable_symbol_labels" | 
-/** Enables insert indicator dialog shortcut (/) @default true */
-"insert_indicator_dialog_shortcut" | 
-/** Display at most two characters in bar marks. The default behavior is to only display one character @default false */
-"two_character_bar_marks_labels" | 
-/** By default many chart layouts can be saved with the same name. If this feature is enabled then the library will prompt to confirm overwriting chart layouts with the same name when saving, renaming, or cloning ("Save as") @default false */
-"confirm_overwrite_if_chart_layout_with_name_exists" | 
-/** By default the chart will request a small (fixed) number of bars for the initial data request when the chart is first created. If this feature is enabled then the library will rather calculate the request size based on the amount of bars which will be visible on the chart @default false */
-"determine_first_data_request_size_using_visible_range" | 
-/** Places the logo on the main series pane instead of the bottom pane @default false */
-"move_logo_to_main_pane" | 
-/** Enables a button in the header to load/save `Indicator template` @default false */
-"study_templates" | 
-/** Enables copying of drawings and studies @default true */
-"datasource_copypaste" | 
-/** Enables the support of resolutions that start from 1 second @default false */
-"seconds_resolution" | 
-/** Enables the support of tick resolution @default false */
-"tick_resolution" | 
-/** Enables a feature to allow an additional series to extend the time scale @default false */
-"secondary_series_extend_time_scale" | 
-/** Removes the header from the chart @default true */
-"header_widget" | 
-/** Hides the symbol search button from the header @default true */
-"header_symbol_search" | 
-/** Symbol search by pressing any key @default true */
-"symbol_search_hot_key" | 
-/** Hides the resolution button from the header @default true */
-"header_resolutions" | 
-/** Displays a `Change interval` dialog to specify another resolution @default true */
-"show_interval_dialog_on_key_press" | 
-/** Hides the chart type button from the header @default true */
-"header_chart_type" | 
-/** Relates to Chart Properties button @default true */
-"header_settings" | 
-/** Hides the indicators button from the header @default true */
-"header_indicators" | 
-/** Hides the compare button from the header @default true */
-"header_compare" | 
-/** Hides the undo/redo button from the header @default true */
-"header_undo_redo" | 
-/** Hides the screenshot button from the header @default true */
-"header_screenshot" | 
-/** Hides the fullscreen button from the header @default true */
-"header_fullscreen_button" | 
-/** Adds a 2px padding to the chart @default true */
-"border_around_the_chart" | 
-/** Hides save/load buttons (the feature is not part of `header_widget` featureset) @default true */
-"header_saveload" | 
-/** Hides the left toolbar aka drawings toolbar @default true */
-"left_toolbar" | 
-/** Relates to the navigation buttons at the bottom of the chart @default true */
-"control_bar" | 
-/** Hide the timeframe toolbar at the bottom of the chart @default true */
-"timeframes_toolbar" | 
-/** Disabling this feature hides the legend widget @default true */
-"legend_widget" | 
-/** Display legend on all diagrams regardless of crosshair synchronization @default false */
-"display_legend_on_all_charts" | 
-/** Display object tree button in the legend at a small width @default true */
-"object_tree_legend_mode" | 
-/** Removes all buttons from the legend except the ellipsis menu @default true */
-"edit_buttons_in_legend" | 
-/** Removes the eye button that hides/shows a chart @default true */
-"show_hide_button_in_legend" | 
-/** Removes the cog icon for accessing chart/indicator's settings @default true */
-"format_button_in_legend" | 
-/** Removes the delete button @default true */
-"delete_button_in_legend" | 
-/** Doesn't display any context menu when right clicking anywhere in the UI @default true */
-"context_menus" | 
-/** Doesn't display the context menu when right clicking on the chart @default true */
-"pane_context_menu" | 
-/** Doesn't display the context menu when right clicking on either price scale or timescale @default true */
-"scales_context_menu" | 
-/** Doesn't display the context menu when right clicking on the legend @default true */
-"legend_context_menu" | 
-/** Displays the settings button in the bottom right corner of the chart @default true */
-"main_series_scale_menu" | 
-/** Hides the market status from the legend @default true */
-"display_market_status" | 
-/** Sets the border style to 0px & padding to 1px @default true */
-"remove_library_container_border" | 
-/** Disables all property pages @default true */
-"property_pages" | 
-/** Turning this feature off disables Properties @default true */
-"show_chart_property_page" | 
-/** Allows overrides for the price scale @default true */
-"chart_property_page_scales" | 
-/** This feature is for the Trading Platform only @default true */
-"chart_property_page_trading" | 
-/** Shows the right margin editor in the setting dialog @default true */
-"chart_property_page_right_margin_editor" | 
-/** Displays a countdown label on a price scale @default true */
-"countdown" | 
-/** Hides true/false study arguments @default false */
-"dont_show_boolean_study_arguments" | 
-/** Hides last n/a study output data @default false */
-"hide_last_na_study_output" | 
-/** Enables the symbol info dialog @default true */
-"symbol_info" | 
-/** Disables timezone context menu @default true */
-"timezone_menu" | 
-/** Includes orders/positions/executions in the screenshot @default false */
-"snapshot_trading_drawings" | 
-/** Disables selection markers for series and indicators @default true */
-"source_selection_markers" | 
-/** Allows you to jump to a particular bar using 'Go to' dialog @default true */
-"go_to_date" | 
-/** Allows you to hide 'charts by TradingView' text on small-screen devices @default true */
-"adaptive_logo" | 
-/** Shows DOM panel when a user opens the Chart for the first time @default false */
-"show_dom_first_time" | 
-/** Hides left toolbar when a user opens the Chart for the first time @default false */
-"hide_left_toolbar_by_default" | 
-/** Adds High-low option to chart style controls @default true */
-"chart_style_hilo" | 
-/** Enables last price line and price axis label on High-low chart style @default false */
-"chart_style_hilo_last_price" | 
-/** Displays the currency in which the instrument is traded on the price axes @default false */
-"pricescale_currency" | 
-/** Displays the unit in which the instrument is traded on the price axes @default false */
-"pricescale_unit" | 
-/** Displays Date Format selector in Chart Settings @default true */
-"scales_date_format" | 
-/** Displays popup hints about possible mouse/shortcuts/UI actions @default true */
-"popup_hints" | 
-/** Enables the save shortcut @default true */
-"save_shortcut" | 
-/** Opens right widget toolbar on first launch @default true */
-"show_right_widgets_panel_by_default" | 
-/** Shows the object tree button in the left or right panel depending on the product and configuration @default true */
-"show_object_tree" | 
-/** Shows the spread operators in the Symbol Search dialog @default false */
-"show_spread_operators" | 
-/** Hide exponentiation spread operator (^) in the Symbol Search dialog @default false */
-"hide_exponentiation_spread_operator" | 
-/** Hide reciprocal spread operator (1/x) in the Symbol Search dialog @default false */
-"hide_reciprocal_spread_operator" | 
-/** Shows the spread operators in the Compare Search dialog - needs to be used in conjunction to show_spread_operators @default false */
-"compare_symbol_search_spread_operators" | 
-/** Shows the spread operators for Studies - needs to be used in conjunction to show_spread_operators @default false */
-"studies_symbol_search_spread_operators" | 
-/** Hide the interval (D, 2D, W, M, etc.) in the chart legend and the data window @default false */
-"hide_resolution_in_legend" | 
-/** Hide unresolved symbols in the chart legend and the data window @default false */
-"hide_unresolved_symbols_in_legend" | 
-/** On touch device show the zoom and move buttons at the bottom of the chart @default false */
-"show_zoom_and_move_buttons_on_touch" | 
-/** Hide the optional symbol input value from the indicator's legend if 'Main chart symbol' option is selected @default true */
-"hide_main_series_symbol_from_indicator_legend" | 
-/** Hide the global last price label on price scale if last bar is outside of visible range @default false */
-"hide_price_scale_global_last_bar_value" | 
-/** Hide the visibility settings of the label and the average close price line @default false */
-"show_average_close_price_line_and_label" | 
-/** Hide image shown to illustrate symbol is invalid @default false */
-"hide_image_invalid_symbol" | 
-/** Show/Hide the exchange label from the displayed label @default false */
-"hide_object_tree_and_price_scale_exchange_label" | 
-/** Displays Time Format selector in Chart Settings @default true */
-"scales_time_hours_format" | 
-/** Show a literal "n/a" for not available values instead of "∅" @default false */
-"use_na_string_for_not_available_values" | 
-/** Enable pre and post market session support @default false */
-"pre_post_market_sessions" | 
-/** Show the option to specify the default right margin in percentage within chart settings dialog @default false */
-"show_percent_option_for_right_margin" | 
-/**
- * Lock the visible range when adjusting the percentage right margin via the settings dialog.
- * This applies when the chart is already at the current default margin position.
- * @default false
- */
-"lock_visible_time_range_when_adjusting_percentage_right_margin" | 
-/**
- * Alternative loading mode for the library, which can be used to support
- * older browsers and a few non-standard browsers.
- * @default false
- */
-"iframe_loading_compatibility_mode" | 
-/** Use the last (rightmost) visible bar value in the legend  @default false */
-"use_last_visible_bar_value_in_legend" | 
-/** Enable long symbol descriptions to be shown in the main series and compare studies legends, if provided in the symbol info data. */
-"symbol_info_long_description" | 
-/** Enable symbol price source to be shown in the main series and compare studies legends, if provided in the symbol info data. */
-"symbol_info_price_source" | 
-/** Enable saving/loading of chart templates. */
-"chart_template_storage" | 
-/**
- * When chart data is reset, then re-request data for just the visible range (instead of the entire range of the existing data loaded).
- * @default false
- */
-"request_only_visible_range_on_reset" | 
-/** Clear pane price scales when the main series has an error or has no bars. @default true */
-"clear_price_scale_on_error_or_empty_bars" | 
-/**
- * Display logos for the symbols within the symbol search dialog, and the watchlist widget. The datafeed should provide the image url within the search result item, and the SymbolInfo. {@link LibrarySymbolInfo.logo_urls}, {@link SearchSymbolResultItem.logo_urls}
- * @default false
- */
-"show_symbol_logos" | 
-/**
- * Display logos for the exchanges within the symbol search dialog. The datafeed should provide the image url within the search result item. {@link SearchSymbolResultItem.exchange_logo}
- * @default false
- */
-"show_exchange_logos" | 
-/**
- * Display the main symbol's logo within the legend. This requires that `show_symbol_logos` is enabled.
- * @default true
- */
-"show_symbol_logo_in_legend" | 
-/**
- * Display the symbol's logo within the legend for compare studies. This requires that `show_symbol_logos` and `show_symbol_logo_in_legend` are enabled.
- * @default true
- */
-"show_symbol_logo_for_compare_studies" | 
-/**
- * Display legend values when on mobile.
- * @default false
- */
-"always_show_legend_values_on_mobile" | 
-/** Enable studies to extend the time scale, if enabled in the study metainfo */
-"studies_extend_time_scale" | 
-/**
- * Enable accessibility features. Adds a keyboard shortcut which turns on keyboard navigation (alt/opt + z).
- * @default true
- */
-"accessibility";
+export type ChartingLibraryFeatureset =
+	/** Allows storing all properties (including favorites) to the localstorage @default true */
+	"use_localstorage_for_settings" |
+	/** Disabling this feature hides "Favorite this item" icon for Drawings and Intervals @default true */
+	"items_favoriting" |
+	/** Can be disabled to forbid storing chart properties to the localstorage while allowing to save other properties. The other properties are favorites in the Advanced Charts and Watchlist symbols and some panels states in the Trading Platform @default true @default true */
+	"save_chart_properties_to_local_storage" |
+	/** Add the volume indicator upon initialisation of the chart @default true */
+	"create_volume_indicator_by_default" |
+	/** Prevent the volume indicator from being recreated when an instrument or a resolution is switched @default true */
+	"create_volume_indicator_by_default_once" |
+	/** Places Volume indicator on the same pane with the main series @default true */
+	"volume_force_overlay" |
+	/** Determines the behavior of Zoom feature: bar under the mouse cursor stays in the same place if this feature is disabled @default true */
+	"right_bar_stays_on_scroll" |
+	/** Keeps the dialogs within the chart @default true */
+	"constraint_dialogs_movement" |
+	/** Enables logs @default false */
+	"charting_library_debug_mode" |
+	/** This enables Drawings Toolbar in the fullscreen mode @default false */
+	"side_toolbar_in_fullscreen_mode" |
+	/** Enables header widget DOM element in the fullscreen mode @default false */
+	"header_in_fullscreen_mode" |
+	/** Shows bar time exactly as provided by the data feed with no adjustments @default false */
+	"disable_resolution_rebuild" |
+	/** Allows chart scrolling @default true */
+	"chart_scroll" |
+	/** Allows chart zooming @default true */
+	"chart_zoom" |
+	/** If enabled, the chart handles horizontal pointer movements on touch screens. In this case the webpage is not scrolled. If disabled, the webpage is scrolled instead. Keep in mind that if the user starts scrolling the chart vertically or horizontally, scrolling is continued in any direction until the user releases the finger @default true */
+	"horz_touch_drag_scroll" |
+	/** If enabled, the chart handles vertical pointer movements on touch screens. In this case the webpage is not scrolled. If disabled, the webpage is scrolled instead. Keep in mind that if the user starts scrolling the chart vertically or horizontally, scrolling is continued in any direction until the user releases the finger @default true */
+	"vert_touch_drag_scroll" |
+	/** If enabled, chart scrolling with horizontal mouse wheel is enabled @default true */
+	"mouse_wheel_scroll" |
+	/** If enabled, chart scrolling with left mouse button pressed is allowed @default true */
+	"pressed_mouse_move_scroll" |
+	/** If enabled, series scaling with a mouse wheel is enabled @default true */
+	"mouse_wheel_scale" |
+	/** If enabled, series scaling with pinch/zoom gestures (this option is supported on touch devices) is enabled @default true */
+	"pinch_scale" |
+	/** If enabled, axis scaling with left mouse button pressed is allowed @default true */
+	"axis_pressed_mouse_move_scale" |
+	/** Allows zooming in to show up to one bar in the viewport @default false */
+	"low_density_bars" |
+	/** Disabling this feature allows a user to enter case-sensitive symbols @default true */
+	"uppercase_instrument_names" |
+	/** Disables minimum chart width limitation @default false */
+	"no_min_chart_width" |
+	/** Prevents scrolling to the left of the first historical bar @default false */
+	"fix_left_edge" |
+	/** Prevents changing visible time area on chart resizing @default false */
+	"lock_visible_time_range_on_resize" |
+	/** If disabled, adding a new bar zooms out the chart preserving the first visible point. Otherwise the chart is scrolled one point to the left when a new bar comes @default true */
+	"shift_visible_range_on_new_bar" |
+	/** If enabled, there is a possibility to add custom resolutions @default false */
+	"custom_resolutions" |
+	/** Toggles the timeline marks to display the bar's end time @default false */
+	"end_of_period_timescale_marks" |
+	/** If disabled, partially visible price labels on price axis will be hidden @default true */
+	"cropped_tick_marks" |
+	/** Applies symbol display mode (ticker/description) to overlay/compare studies in the status line @default false */
+	"study_overlay_compare_legend_option" |
+	/** Applies symbol display mode (ticker/description) to indicator inputs in the status line @default false */
+	"study_symbol_ticker_description" |
+	/** Displays Symbol Name Label when comparing Symbols @default true */
+	"auto_enable_symbol_labels" |
+	/** Enables insert indicator dialog shortcut (/) @default true */
+	"insert_indicator_dialog_shortcut" |
+	/** Display at most two characters in bar marks. The default behavior is to only display one character @default false */
+	"two_character_bar_marks_labels" |
+	/** By default many chart layouts can be saved with the same name. If this feature is enabled then the library will prompt to confirm overwriting chart layouts with the same name when saving, renaming, or cloning ("Save as") @default false */
+	"confirm_overwrite_if_chart_layout_with_name_exists" |
+	/** By default the chart will request a small (fixed) number of bars for the initial data request when the chart is first created. If this feature is enabled then the library will rather calculate the request size based on the amount of bars which will be visible on the chart @default false */
+	"determine_first_data_request_size_using_visible_range" |
+	/** Places the logo on the main series pane instead of the bottom pane @default false */
+	"move_logo_to_main_pane" |
+	/** Enables a button in the header to load/save `Indicator template` @default false */
+	"study_templates" |
+	/** Enables copying of drawings and studies @default true */
+	"datasource_copypaste" |
+	/** Enables the support of resolutions that start from 1 second @default false */
+	"seconds_resolution" |
+	/** Enables the support of tick resolution @default false */
+	"tick_resolution" |
+	/** Enables a feature to allow an additional series to extend the time scale @default false */
+	"secondary_series_extend_time_scale" |
+	/** Removes the header from the chart @default true */
+	"header_widget" |
+	/** Hides the symbol search button from the header @default true */
+	"header_symbol_search" |
+	/** Symbol search by pressing any key @default true */
+	"symbol_search_hot_key" |
+	/** Hides the resolution button from the header @default true */
+	"header_resolutions" |
+	/** Displays a `Change interval` dialog to specify another resolution @default true */
+	"show_interval_dialog_on_key_press" |
+	/** Hides the chart type button from the header @default true */
+	"header_chart_type" |
+	/** Relates to Chart Properties button @default true */
+	"header_settings" |
+	/** Hides the indicators button from the header @default true */
+	"header_indicators" |
+	/** Hides the compare button from the header @default true */
+	"header_compare" |
+	/** Hides the undo/redo button from the header @default true */
+	"header_undo_redo" |
+	/** Hides the screenshot button from the header @default true */
+	"header_screenshot" |
+	/** Hides the fullscreen button from the header @default true */
+	"header_fullscreen_button" |
+	/** Adds a 2px padding to the chart @default true */
+	"border_around_the_chart" |
+	/** Hides save/load buttons (the feature is not part of `header_widget` featureset) @default true */
+	"header_saveload" |
+	/** Hides the left toolbar aka drawings toolbar @default true */
+	"left_toolbar" |
+	/** Relates to the navigation buttons at the bottom of the chart @default true */
+	"control_bar" |
+	/** Hide the timeframe toolbar at the bottom of the chart @default true */
+	"timeframes_toolbar" |
+	/** Disabling this feature hides the legend widget @default true */
+	"legend_widget" |
+	/** Display legend on all diagrams regardless of crosshair synchronization @default false */
+	"display_legend_on_all_charts" |
+	/** Display object tree button in the legend at a small width @default true */
+	"object_tree_legend_mode" |
+	/** Removes all buttons from the legend except the ellipsis menu @default true */
+	"edit_buttons_in_legend" |
+	/** Removes the eye button that hides/shows a chart @default true */
+	"show_hide_button_in_legend" |
+	/** Removes the cog icon for accessing chart/indicator's settings @default true */
+	"format_button_in_legend" |
+	/** Removes the delete button @default true */
+	"delete_button_in_legend" |
+	/** Doesn't display any context menu when right clicking anywhere in the UI @default true */
+	"context_menus" |
+	/** Doesn't display the context menu when right clicking on the chart @default true */
+	"pane_context_menu" |
+	/** Doesn't display the context menu when right clicking on either price scale or timescale @default true */
+	"scales_context_menu" |
+	/** Doesn't display the context menu when right clicking on the legend @default true */
+	"legend_context_menu" |
+	/** Displays the settings button in the bottom right corner of the chart @default true */
+	"main_series_scale_menu" |
+	/** Hides the market status from the legend @default true */
+	"display_market_status" |
+	/** Sets the border style to 0px & padding to 1px @default true */
+	"remove_library_container_border" |
+	/** Disables all property pages @default true */
+	"property_pages" |
+	/** Turning this feature off disables Properties @default true */
+	"show_chart_property_page" |
+	/** Allows overrides for the price scale @default true */
+	"chart_property_page_scales" |
+	/** This feature is for the Trading Platform only @default true */
+	"chart_property_page_trading" |
+	/** Shows the right margin editor in the setting dialog @default true */
+	"chart_property_page_right_margin_editor" |
+	/** Displays a countdown label on a price scale @default true */
+	"countdown" |
+	/** Hides true/false study arguments @default false */
+	"dont_show_boolean_study_arguments" |
+	/** Hides last n/a study output data @default false */
+	"hide_last_na_study_output" |
+	/** Enables the symbol info dialog @default true */
+	"symbol_info" |
+	/** Disables timezone context menu @default true */
+	"timezone_menu" |
+	/** Includes orders/positions/executions in the screenshot @default false */
+	"snapshot_trading_drawings" |
+	/** Disables selection markers for series and indicators @default true */
+	"source_selection_markers" |
+	/** Allows you to jump to a particular bar using 'Go to' dialog @default true */
+	"go_to_date" |
+	/** Allows you to hide 'charts by TradingView' text on small-screen devices @default true */
+	"adaptive_logo" |
+	/** Shows DOM panel when a user opens the Chart for the first time @default false */
+	"show_dom_first_time" |
+	/** Hides left toolbar when a user opens the Chart for the first time @default false */
+	"hide_left_toolbar_by_default" |
+	/** Adds High-low option to chart style controls @default true */
+	"chart_style_hilo" |
+	/** Enables last price line and price axis label on High-low chart style @default false */
+	"chart_style_hilo_last_price" |
+	/** Displays the currency in which the instrument is traded on the price axes @default false */
+	"pricescale_currency" |
+	/** Displays the unit in which the instrument is traded on the price axes @default false */
+	"pricescale_unit" |
+	/** Displays Date Format selector in Chart Settings @default true */
+	"scales_date_format" |
+	/** Displays popup hints about possible mouse/shortcuts/UI actions @default true */
+	"popup_hints" |
+	/** Enables the save shortcut @default true */
+	"save_shortcut" |
+	/** Opens right widget toolbar on first launch @default true */
+	"show_right_widgets_panel_by_default" |
+	/** Shows the object tree button in the left or right panel depending on the product and configuration @default true */
+	"show_object_tree" |
+	/** Shows the spread operators in the Symbol Search dialog @default false */
+	"show_spread_operators" |
+	/** Hide exponentiation spread operator (^) in the Symbol Search dialog @default false */
+	"hide_exponentiation_spread_operator" |
+	/** Hide reciprocal spread operator (1/x) in the Symbol Search dialog @default false */
+	"hide_reciprocal_spread_operator" |
+	/** Shows the spread operators in the Compare Search dialog - needs to be used in conjunction to show_spread_operators @default false */
+	"compare_symbol_search_spread_operators" |
+	/** Shows the spread operators for Studies - needs to be used in conjunction to show_spread_operators @default false */
+	"studies_symbol_search_spread_operators" |
+	/** Hide the interval (D, 2D, W, M, etc.) in the chart legend and the data window @default false */
+	"hide_resolution_in_legend" |
+	/** Hide unresolved symbols in the chart legend and the data window @default false */
+	"hide_unresolved_symbols_in_legend" |
+	/** On touch device show the zoom and move buttons at the bottom of the chart @default false */
+	"show_zoom_and_move_buttons_on_touch" |
+	/** Hide the optional symbol input value from the indicator's legend if 'Main chart symbol' option is selected @default true */
+	"hide_main_series_symbol_from_indicator_legend" |
+	/** Hide the global last price label on price scale if last bar is outside of visible range @default false */
+	"hide_price_scale_global_last_bar_value" |
+	/** Hide the visibility settings of the label and the average close price line @default false */
+	"show_average_close_price_line_and_label" |
+	/** Hide image shown to illustrate symbol is invalid @default false */
+	"hide_image_invalid_symbol" |
+	/** Show/Hide the exchange label from the displayed label @default false */
+	"hide_object_tree_and_price_scale_exchange_label" |
+	/** Displays Time Format selector in Chart Settings @default true */
+	"scales_time_hours_format" |
+	/** Show a literal "n/a" for not available values instead of "∅" @default false */
+	"use_na_string_for_not_available_values" |
+	/** Enable pre and post market session support @default false */
+	"pre_post_market_sessions" |
+	/** Show the option to specify the default right margin in percentage within chart settings dialog @default false */
+	"show_percent_option_for_right_margin" |
+	/**
+	 * Lock the visible range when adjusting the percentage right margin via the settings dialog.
+	 * This applies when the chart is already at the current default margin position.
+	 * @default false
+	 */
+	"lock_visible_time_range_when_adjusting_percentage_right_margin" |
+	/**
+	 * Alternative loading mode for the library, which can be used to support
+	 * older browsers and a few non-standard browsers.
+	 * @default false
+	 */
+	"iframe_loading_compatibility_mode" |
+	/** Use the last (rightmost) visible bar value in the legend  @default false */
+	"use_last_visible_bar_value_in_legend" |
+	/** Enable long symbol descriptions to be shown in the main series and compare studies legends, if provided in the symbol info data. */
+	"symbol_info_long_description" |
+	/** Enable symbol price source to be shown in the main series and compare studies legends, if provided in the symbol info data. */
+	"symbol_info_price_source" |
+	/** Enable saving/loading of chart templates. */
+	"chart_template_storage" |
+	/**
+	 * When chart data is reset, then re-request data for just the visible range (instead of the entire range of the existing data loaded).
+	 * @default false
+	 */
+	"request_only_visible_range_on_reset" |
+	/** Clear pane price scales when the main series has an error or has no bars. @default true */
+	"clear_price_scale_on_error_or_empty_bars" |
+	/**
+	 * Display logos for the symbols within the symbol search dialog, and the watchlist widget. The datafeed should provide the image url within the search result item, and the SymbolInfo. {@link LibrarySymbolInfo.logo_urls}, {@link SearchSymbolResultItem.logo_urls}
+	 * @default false
+	 */
+	"show_symbol_logos" |
+	/**
+	 * Display logos for the exchanges within the symbol search dialog. The datafeed should provide the image url within the search result item. {@link SearchSymbolResultItem.exchange_logo}
+	 * @default false
+	 */
+	"show_exchange_logos" |
+	/**
+	 * Display the main symbol's logo within the legend. This requires that `show_symbol_logos` is enabled.
+	 * @default true
+	 */
+	"show_symbol_logo_in_legend" |
+	/**
+	 * Display the symbol's logo within the legend for compare studies. This requires that `show_symbol_logos` and `show_symbol_logo_in_legend` are enabled.
+	 * @default true
+	 */
+	"show_symbol_logo_for_compare_studies" |
+	/**
+	 * Display legend values when on mobile.
+	 * @default false
+	 */
+	"always_show_legend_values_on_mobile" |
+	/** Enable studies to extend the time scale, if enabled in the study metainfo */
+	"studies_extend_time_scale" |
+	/**
+	 * Enable accessibility features. Adds a keyboard shortcut which turns on keyboard navigation (alt/opt + z).
+	 * @default true
+	 */
+	"accessibility";
 /** These are defining the types for a background */
 export type ColorTypes = "solid" | "gradient";
 /**
@@ -18103,27 +18103,27 @@ export type TableFormatterInputValue = any;
 export type TableFormatterInputValues = TableFormatterInputValue[];
 export type TextInputFieldValidator = (value: string) => InputFieldValidatorResult;
 export type ThemeName = "light" | "dark";
-export type TickMarkType = 
-/**
- * The start of the year (e.g. it's the first tick mark in a year).
- */
-"Year"
-/**
- * The start of the month (e.g. it's the first tick mark in a month).
- */
- | "Month"
-/**
- * A day of the month.
- */
- | "DayOfMonth"
-/**
- * A time without seconds.
- */
- | "Time"
-/**
- * A time with seconds.
- */
- | "TimeWithSeconds";
+export type TickMarkType =
+	/**
+	 * The start of the year (e.g. it's the first tick mark in a year).
+	 */
+	"Year"
+	/**
+	 * The start of the month (e.g. it's the first tick mark in a month).
+	 */
+	| "Month"
+	/**
+	 * A day of the month.
+	 */
+	| "DayOfMonth"
+	/**
+	 * A time without seconds.
+	 */
+	| "Time"
+	/**
+	 * A time with seconds.
+	 */
+	| "TimeWithSeconds";
 /**
  * Type of timeframe defined in the UI.
  * Can either be a single one {@link TimeFramePeriodBack} or a range {@link TimeFrameTimeRange}
@@ -18161,77 +18161,77 @@ export type TradingDialogCustomField = CheckboxFieldMetaInfo | TextWithCheckboxF
  */
 export type TradingTerminalChartTypeFavorites = ChartTypeFavorites | "Renko" | "Kagi" | "Point & figure" | "Line Break";
 /** This is the list of all featuresets that work on Trading Platform (which is an extension of Advanced Charts) */
-export type TradingTerminalFeatureset = ChartingLibraryFeatureset | 
-/** Enables the "plus" button on the price scale for quick trading @default true */
-"chart_crosshair_menu" | 
-/** Enables context menu actions (Clone, Sync) related to Multiple Chart Layout @default true */
-"support_multicharts" | 
-/** Shows the Select Layout button in the header @default true */
-"header_layouttoggle" | 
-/** Enables "Add symbol to Watchlist" item in the menu @default true */
-"add_to_watchlist" | 
-/** Keeps the Account Manager opened by default @default true */
-"open_account_manager" | 
-/** Shows trading notifications on the chart @default true */
-"trading_notifications" | 
-/** Enables creating of multiple watchlists @default true */
-"multiple_watchlists" | 
-/** Enables the Notifications Log tab in the bottom panel @default true */
-"show_trading_notifications_history" | 
-/** If a bracket order is modified, the terminal passes its parent order to `modifyOrder`. The featureset disables this behavior @default false */
-"always_pass_called_order_to_modify" | 
-/** Enables Drawing Templates on Drawing toolbar. If disabled users will still be able to apply the default settings for their selection. @default true */
-"drawing_templates" | 
-/** Shows the Account Manager Widget @default true */
-"trading_account_manager" | 
-/** Shows the right buttons toolbar @default true */
-"right_toolbar" | 
-/** Shows the Order Panel @default true */
-"order_panel" | 
-/** Shows the Order info section in the Order dialog @default true */
-"order_info" | 
-/** Shows the Buy/Sell Buttons in Legend @default true */
-"buy_sell_buttons" | 
-/** Shows the Broker Button in Legend @default true */
-"broker_button" | 
-/** Order Panel is visible when the chart opens @default false */
-"show_order_panel_on_start" | 
-/** Shows close Order Panel button @default true */
-"order_panel_close_button" | 
-/** Shows the Undock button in the Order Panel Settings @default true */
-"order_panel_undock" | 
-/** Hide the close button for position @default false */
-"chart_hide_close_position_button" | 
-/** Hide the close button for order @default false */
-"chart_hide_close_order_button" | 
-/** Enables watchlist export and import @default true */
-"watchlist_import_export" | 
-/** Enables DOM widget visibility @default false */
-"dom_widget" | 
-/** Keeps Object Tree widget in the right toolbar. If the right toolbar is not enabled this feature will have no effect. @default false */
-"keep_object_tree_widget_in_right_toolbar" | 
-/** Show only the last price and change values in the main series legend @default false */
-"show_last_price_and_change_only_in_series_legend" | 
-/** Show a context menu on clicking the crosshair menu even when there's only 1 item to show @default false */
-"show_context_menu_in_crosshair_if_only_one_item" | 
-/** Enable context menu support in the watchlist. */
-"watchlist_context_menu " | 
-/** Hide the right_toolbar when initialising the chart. Can be expanded using the widgetBar API {@link IWidgetbarApi}  @default false */
-"hide_right_toolbar" | 
-/** Hide the tabs within the right toolbar @default false */
-"hide_right_toolbar_tabs" | 
-/** Hide price scales when all sources attached to the price scale are hidden. */
-"hide_price_scale_if_all_sources_hidden" | 
-/**
- * Display the symbol's logo within the account manager panel. This requires that `show_symbol_logos` is enabled.
- * @default true
- */
-"show_symbol_logo_in_account_manager" | 
-/**
- * Display UI (buttons and context menu options) for creating sections within the watchlist.
- * @default true
- */
-"watchlist_sections";
+export type TradingTerminalFeatureset = ChartingLibraryFeatureset |
+	/** Enables the "plus" button on the price scale for quick trading @default true */
+	"chart_crosshair_menu" |
+	/** Enables context menu actions (Clone, Sync) related to Multiple Chart Layout @default true */
+	"support_multicharts" |
+	/** Shows the Select Layout button in the header @default true */
+	"header_layouttoggle" |
+	/** Enables "Add symbol to Watchlist" item in the menu @default true */
+	"add_to_watchlist" |
+	/** Keeps the Account Manager opened by default @default true */
+	"open_account_manager" |
+	/** Shows trading notifications on the chart @default true */
+	"trading_notifications" |
+	/** Enables creating of multiple watchlists @default true */
+	"multiple_watchlists" |
+	/** Enables the Notifications Log tab in the bottom panel @default true */
+	"show_trading_notifications_history" |
+	/** If a bracket order is modified, the terminal passes its parent order to `modifyOrder`. The featureset disables this behavior @default false */
+	"always_pass_called_order_to_modify" |
+	/** Enables Drawing Templates on Drawing toolbar. If disabled users will still be able to apply the default settings for their selection. @default true */
+	"drawing_templates" |
+	/** Shows the Account Manager Widget @default true */
+	"trading_account_manager" |
+	/** Shows the right buttons toolbar @default true */
+	"right_toolbar" |
+	/** Shows the Order Panel @default true */
+	"order_panel" |
+	/** Shows the Order info section in the Order dialog @default true */
+	"order_info" |
+	/** Shows the Buy/Sell Buttons in Legend @default true */
+	"buy_sell_buttons" |
+	/** Shows the Broker Button in Legend @default true */
+	"broker_button" |
+	/** Order Panel is visible when the chart opens @default false */
+	"show_order_panel_on_start" |
+	/** Shows close Order Panel button @default true */
+	"order_panel_close_button" |
+	/** Shows the Undock button in the Order Panel Settings @default true */
+	"order_panel_undock" |
+	/** Hide the close button for position @default false */
+	"chart_hide_close_position_button" |
+	/** Hide the close button for order @default false */
+	"chart_hide_close_order_button" |
+	/** Enables watchlist export and import @default true */
+	"watchlist_import_export" |
+	/** Enables DOM widget visibility @default false */
+	"dom_widget" |
+	/** Keeps Object Tree widget in the right toolbar. If the right toolbar is not enabled this feature will have no effect. @default false */
+	"keep_object_tree_widget_in_right_toolbar" |
+	/** Show only the last price and change values in the main series legend @default false */
+	"show_last_price_and_change_only_in_series_legend" |
+	/** Show a context menu on clicking the crosshair menu even when there's only 1 item to show @default false */
+	"show_context_menu_in_crosshair_if_only_one_item" |
+	/** Enable context menu support in the watchlist. */
+	"watchlist_context_menu " |
+	/** Hide the right_toolbar when initialising the chart. Can be expanded using the widgetBar API {@link IWidgetbarApi}  @default false */
+	"hide_right_toolbar" |
+	/** Hide the tabs within the right toolbar @default false */
+	"hide_right_toolbar_tabs" |
+	/** Hide price scales when all sources attached to the price scale are hidden. */
+	"hide_price_scale_if_all_sources_hidden" |
+	/**
+	 * Display the symbol's logo within the account manager panel. This requires that `show_symbol_logos` is enabled.
+	 * @default true
+	 */
+	"show_symbol_logo_in_account_manager" |
+	/**
+	 * Display UI (buttons and context menu options) for creating sections within the watchlist.
+	 * @default true
+	 */
+	"watchlist_sections";
 export type VisiblePlotsSet = "ohlcv" | "ohlc" | "c";
 export type WatchListSymbolListAddedCallback = (listId: string, symbols: string[]) => void;
 export type WatchListSymbolListChangedCallback = (listId: string) => void;
@@ -18249,7 +18249,7 @@ export type WidgetOverrides = DrawingOverrides & {
 
 export as namespace TradingView;
 
-export {};
+export { };
 
 declare type DeepPartial<T> = {
 	[P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends readonly (infer X)[] ? readonly DeepPartial<X>[] : DeepPartial<T[P]>;

@@ -49,6 +49,7 @@ export const ProfileForm = ({ children }: Props) => {
     update({
       name: fields.name.value,
       description: fields.bio.value,
+      logo: userInfo?.logo,
     }).then(() => refetchUserInfo())
 
     // Clear form & close.
@@ -97,10 +98,16 @@ export const ProfileForm = ({ children }: Props) => {
             onChange={onChange}
             disableFocusBorder
           />
-          <DialogFooter className="!justify-start max-sm:flex-row max-sm:gap-0">
-            <Button variant="default">{t('confirm')}</Button>
+          <DialogFooter className="max-sm:flex-row max-sm:gap-0">
+            <Button variant={'purple'} className="px-6">
+              {t('confirm')}
+            </Button>
             <DialogClose ref={closeRef} asChild>
-              <Button variant="outline" type="button" className="max-sm:ml-3">
+              <Button
+                variant="outline"
+                type="button"
+                className="px-6 max-sm:ml-3"
+              >
                 {t('cancel')}
               </Button>
             </DialogClose>

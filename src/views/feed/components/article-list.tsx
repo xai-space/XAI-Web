@@ -1,9 +1,9 @@
-import { FeedListRes } from '@/api/feed/types'
+import { FeedListItem } from '@/api/feed/types'
 import { Card } from '@/components/ui/card'
 import { memo } from 'react'
 import ArticleCard from './article-card'
 
-const ArticleList = ({ articles }: { articles: FeedListRes[] }) => {
+const ArticleList = ({ articles }: { articles: FeedListItem[] }) => {
   if (articles.length === 0) {
     return <Card>Card</Card>
   }

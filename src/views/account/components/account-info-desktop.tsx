@@ -33,8 +33,6 @@ import {
 import { use, useEffect, useState } from 'react'
 import Input from '@/components/input'
 import { useUserStore } from '@/stores/use-user-store'
-import { BiCloset, BiEdit, BiSave } from 'react-icons/bi'
-import { Dialog, DialogFooter } from '@/components/ui/dialog'
 
 export const AccountInfoDesktop = (props: AccountInfoProps) => {
   const {
@@ -45,33 +43,26 @@ export const AccountInfoDesktop = (props: AccountInfoProps) => {
     update,
     follow,
     unfollow,
+    isAgent,
     refetchUserInfo,
   } = props
   const { t } = useTranslation()
   const { copy } = useClipboard()
 
-  const { userInfo } = useUserStore()
+  const { userInfo, otherUserInfo, agentInfo } = useUserStore()
 
   const { user, primaryWallet } = useDynamicContext()
   const userWallets = useWalletOptions()
 
-  const [show, setShow] = useState(false)
+  console.log('agentInfo', agentInfo, isAgent)
 
-  const [name, setName] = useState(userInfo?.user?.name)
-
-  const onChangeName = () => {
-    update({ name: name, logo: userInfo?.user.logo }).then(() => {
-      refetchUserInfo()
-      setShow(false)
-    })
+  const handleFollow = async () => {
+    // const { code } = await handleFollow({
+    //   status: agentInfo.is_followed ? 0 : 1,
+    //   category: card.agent_id! ? UserCategory.Agent : UserCategory.User,
+    //   target_id: card.agent_id! || card.user_id!,
+    // })
   }
-
-  useEffect(() => {
-    console.log('userInfo?.user?.name', userInfo?.user?.name)
-    if (userInfo?.user?.name) {
-      setName(userInfo?.user?.name)
-    }
-  }, [userInfo?.user])
 
   return (
     <div className="w-full flex justify-between items-start">
@@ -84,15 +75,8 @@ export const AccountInfoDesktop = (props: AccountInfoProps) => {
         <div>
           <div className="flex space-x-2 items-center">
             <p className="font-bold text-2xl">
-              {userInfo?.user?.name || primaryWallet?.address.slice(0, 4)}
+              {isAgent ? agentInfo?.name : otherUserInfo?.name}
             </p>
-            <BiEdit
-              size={18}
-              className="cursor-pointer"
-              onClick={() => {
-                setShow(true)
-              }}
-            />
           </div>
           <FollowDesktop />
 
@@ -100,14 +84,14 @@ export const AccountInfoDesktop = (props: AccountInfoProps) => {
             <HoverCardPop content={t('account.total-likes')}>
               <span className="inline-flex items-center text-red-500">
                 <HeartFilledIcon className="mr-1 w-4 h-4" />
-                {userInfo?.like_count || 0}
+                {/* {userInfo?.like_count || 0} */}0
               </span>
             </HoverCardPop>
 
             <HoverCardPop content={t('account.total-mentions')}>
               <span className="inline-flex items-center ml-1 text-white">
                 <EnvelopeClosedIcon className="mr-1 w-4 h-4" />
-                {userInfo?.mention_count || 0}
+                {/* {userInfo?.mention_count || 0} */}0
               </span>
             </HoverCardPop>
 
@@ -129,7 +113,7 @@ export const AccountInfoDesktop = (props: AccountInfoProps) => {
               >
                 <DiamondIcon size={17} />
                 <span className="font-bold">
-                  {fmt.decimals(userInfo?.reward_amount) || 0}
+                  0{/* {fmt.decimals(userInfo?.reward_amount) || 0} */}
                 </span>
                 <span
                   className="max-sm:hidden text-sm text-blue-600 cursor-pointer hover:underline ml-2"
@@ -142,55 +126,23 @@ export const AccountInfoDesktop = (props: AccountInfoProps) => {
           </div>
         </div>
       </div>
-
-      <Dialog open={show} onOpenChange={setShow}>
-        <div className="font-bold">{t('edit.name')}</div>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          autoFocus
-        ></Input>
-        <DialogFooter>
-          <Button
-            onClick={onChangeName}
-            variant={'purple'}
-            className="w-[80px]"
-            disabled={!name?.trim() || name === userInfo?.user?.name}
-          >
-            {t('save')}
-          </Button>
-          <Button
-            onClick={() => setShow(false)}
-            variant={'outline'}
-            className="w-[80px]"
-          >
-            {t('cancel')}
-          </Button>
-        </DialogFooter>
-      </Dialog>
-      {/* <div className="flex space-x-6 items-center">
+      <div className="flex space-x-6 items-center">
         {isOtherUser ? (
           <Button
             variant={'purple'}
             shadow={'none'}
             className="flex items-center space-x-2"
             disabled={isFollowing || isUnfollowing}
-            onClick={() =>
-              userInfo?.is_follower ? unfollow(tokenAddr) : follow(tokenAddr)
-            }
+            onClick={() => {}}
           >
-            {userInfo?.is_follower ? <MinusIcon /> : <PlusIcon />}
+            {otherUserInfo?.is_followed ? <MinusIcon /> : <PlusIcon />}
             <span className="text-sm">
-              {userInfo?.is_follower ? t('unfollow') : t('follow')}
+              {otherUserInfo?.is_followed ? t('unfollow') : t('follow')}
             </span>
           </Button>
         ) : (
           <ProfileForm>
-            <Button
-              variant={'purple'}
-              shadow={'none'}
-              className="flex items-center space-x-2"
-            >
+            <Button variant={'purple'} className="flex items-center space-x-2">
               <IoSettingsOutline size={18} />
               <span className="text-sm">{t('edit')}</span>
             </Button>
@@ -212,7 +164,7 @@ export const AccountInfoDesktop = (props: AccountInfoProps) => {
             <p>{t('copy.wallet.address')}</p>
           </PopoverContent>
         </Popover>
-      </div> */}
+      </div>
     </div>
   )
 }

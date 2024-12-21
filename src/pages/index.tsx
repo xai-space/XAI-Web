@@ -1,1 +1,1 @@
-export { default } from '@/views/ai/agent'
+export { default } from '@/views/index'

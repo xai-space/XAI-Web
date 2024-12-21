@@ -32,11 +32,10 @@ export const useUser = (options?: Options) => {
     },
   })
 
-  // Follow a user.
-  const { isPending: isFollowing, mutateAsync: follow } = useMutation({
-    mutationKey: [userApi.follow.name],
-    mutationFn: userApi.follow,
-    onMutate: () => toast.loading(t('user.follow.loading')),
+  const { isPending: isHandling, mutateAsync: handleFollow } = useMutation({
+    mutationKey: [userApi.postFollow.name],
+    mutationFn: userApi.postFollow,
+    onMutate: () => toast.loading(t('loading')),
     onSettled: (_, __, ___, id) => {
       onFollowFinlly?.()
       return toast.dismiss(id)
@@ -49,31 +48,46 @@ export const useUser = (options?: Options) => {
       toast.success(t('user.follow.success'))
     },
   })
+  // // Follow a user.
+  // const { isPending: isFollowing, mutateAsync: follow } = useMutation({
+  //   mutationKey: [userApi.follow.name],
+  //   mutationFn: userApi.follow,
+  //   onMutate: () => toast.loading(t('user.follow.loading')),
+  //   onSettled: (_, __, ___, id) => {
+  //     onFollowFinlly?.()
+  //     return toast.dismiss(id)
+  //   },
+  //   onError: () => toast.error(t('user.follow.failed')),
+  //   onSuccess: ({ data }) => {
+  //     if (!data) return
+  //     setUserInfo(data)
+  //     onFollowSuccess?.(data)
+  //     toast.success(t('user.follow.success'))
+  //   },
+  // })
 
-  // Unfollow a user.
-  const { isPending: isUnfollowing, mutateAsync: unfollow } = useMutation({
-    mutationKey: [userApi.unfollow.name],
-    mutationFn: userApi.unfollow,
-    onMutate: () => toast.loading(t('user.unfollow.loading')),
-    onSettled: (_, __, ___, id) => {
-      onFollowFinlly?.()
-      return toast.dismiss(id)
-    },
-    onError: () => toast.error(t('user.unfollow.failed')),
-    onSuccess: ({ data }) => {
-      if (!data) return
-      setUserInfo(data)
-      onFollowSuccess?.(data)
-      toast.success(t('user.unfollow.success'))
-    },
-  })
+  // // Unfollow a user.
+  // const { isPending: isUnfollowing, mutateAsync: unfollow } = useMutation({
+  //   mutationKey: [userApi.unfollow.name],
+  //   mutationFn: userApi.unfollow,
+  //   onMutate: () => toast.loading(t('user.unfollow.loading')),
+  //   onSettled: (_, __, ___, id) => {
+  //     onFollowFinlly?.()
+  //     return toast.dismiss(id)
+  //   },
+  //   onError: () => toast.error(t('user.unfollow.failed')),
+  //   onSuccess: ({ data }) => {
+  //     if (!data) return
+  //     setUserInfo(data)
+  //     onFollowSuccess?.(data)
+  //     toast.success(t('user.unfollow.success'))
+  //   },
+  // })
 
   return {
     isUpdating,
-    isFollowing,
-    isUnfollowing,
+    isHandling,
     update,
-    follow,
-    unfollow,
+    handleFollow,
   }
 }
